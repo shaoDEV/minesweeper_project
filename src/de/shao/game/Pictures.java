@@ -7,7 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
-public enum Pictures{
+public enum Pictures {
 
     ONE("src/resources/ONE.png"),
     TWO("src/resources/TWO.png"),
@@ -23,20 +23,25 @@ public enum Pictures{
     BOMB("src/resources/BOMB.png");
 
     private String path;
-    Map<String, BufferedImage> imageMap = new HashMap<String, BufferedImage>();
+    Map<String, Image> imageMap = new HashMap<>();
 
-
-    Pictures(String path){
+    Pictures(String path) {
         this.path = path;
     }
 
-    public BufferedImage image(){
-        BufferedImage image = null;
-        try {
-            image = ImageIO.read(new File(path));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+    public Image image() {
+        if (imageMap.containsKey(path)) {
+            return imageMap.get(path);
+        } else {
+            BufferedImage image;
+            try {
+                image = ImageIO.read(new File(path));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            Image scaledImage = image.getScaledInstance(GameBoard.FIELD_MEASURE, GameBoard.FIELD_MEASURE, Image.SCALE_SMOOTH);
+            imageMap.put(path, scaledImage);
+            return scaledImage;
         }
-        return image;
     }
 }

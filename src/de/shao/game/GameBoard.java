@@ -28,7 +28,7 @@ public class GameBoard extends JPanel{
         init();
         this.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void mousePressed(MouseEvent e) {
                 fieldClicked(e);
             }
         });

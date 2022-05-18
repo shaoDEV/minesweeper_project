@@ -25,7 +25,7 @@ public class Field {
         this.y = y;
         bottomPictureIdentifier = ' ';
         blockedFlag = false;
-        openFlag = true;
+        openFlag = false;
     }
 
     public void drawField(Graphics2D g2d) {
@@ -49,6 +49,17 @@ public class Field {
             image = Pictures.BLOCKED.image();
         }
         g2d.drawImage(image, x, y, null);
+    }
+
+    public void pressed(int mouseButton){
+        //Linke Maustaste
+        if (mouseButton == 1){
+            if (!openFlag && !blockedFlag) openFlag = true;
+        }
+        //Rechte Maustaste
+        if (mouseButton == 3){
+            if (!openFlag) blockedFlag = !blockedFlag;
+        }
     }
 
     public void setBottomPictureIdentifier(char bottomPicture) {

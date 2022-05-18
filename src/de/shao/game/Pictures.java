@@ -9,18 +9,18 @@ import java.util.*;
 
 public enum Pictures {
 
-    ONE("src/resources/ONE.png"),
-    TWO("src/resources/TWO.png"),
-    THREE("src/resources/THREE.png"),
-    FOUR("src/resources/FOUR.png"),
-    FIVE("src/resources/FIVE.png"),
-    SIX("src/resources/SIX.png"),
-    SEVEN("src/resources/SEVEN.png"),
-    EIGHT("src/resources/EIGHT.png"),
-    BLOCKED("src/resources/CLOSED_FIELD.png"),
-    OPEN("src/resources/OPEN_FIELD.png"),
-    FLAG("src/resources/FLAG.png"),
-    BOMB("src/resources/BOMB.png");
+    ONE("resources/ONE.png"),
+    TWO("resources/TWO.png"),
+    THREE("resources/THREE.png"),
+    FOUR("resources/FOUR.png"),
+    FIVE("resources/FIVE.png"),
+    SIX("resources/SIX.png"),
+    SEVEN("resources/SEVEN.png"),
+    EIGHT("resources/EIGHT.png"),
+    BLOCKED("resources/BOX_NORMAL.png"),
+    OPEN("resources/FIELD_OPEN.png"),
+    FLAG("resources/BOX_BLOCKED.png"),
+    BOMB("resources/RABBIT.png");
 
     private String path;
     Map<String, Image> imageMap = new HashMap<>();

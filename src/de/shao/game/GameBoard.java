@@ -2,9 +2,13 @@ package de.shao.game;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.font.TextHitInfo;
 import java.util.Random;
 
-public class GameBoard extends JPanel {
+public class GameBoard extends JPanel{
 
     public static final int FIELD_MEASURE = 48; //Groeße der Bilder
     private final int FIELD_SIZE = 10;
@@ -22,6 +26,28 @@ public class GameBoard extends JPanel {
         fieldMatrix = new Field[FIELD_SIZE][FIELD_SIZE];
         allFields = new Field[FIELD_SIZE * FIELD_SIZE];
         init();
+        this.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                fieldClicked(e);
+            }
+        });
+    }
+
+    private void fieldClicked(MouseEvent e){
+        int xCordinateClicked = e.getX()/FIELD_MEASURE;
+        int yCordinateClicked = e.getY()/FIELD_MEASURE;
+        if (!(fieldMatrix[yCordinateClicked][xCordinateClicked].getBottomPictureIdentifier() == 'b')){
+            fieldMatrix[yCordinateClicked][xCordinateClicked].pressed(e.getButton());
+            repaint();
+        }else{
+            int input = JOptionPane.showConfirmDialog(null, "Willst du erneut spielen ?", "Erneut spielen ?",
+                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+            switch (input){
+                case 0 -> System.out.println("Geht nicht!");
+                case 1 -> System.out.println("Pech!");
+            }
+        }
     }
 
     @Override
@@ -102,7 +128,6 @@ public class GameBoard extends JPanel {
                     }
                     if (nearBombs > 0){
                         fieldMatrix[verticalPosition][horizontalPosition].setBottomPictureIdentifier(Character.forDigit(nearBombs,10));
-                        System.out.println(nearBombs);
                     }
                 }
             }

@@ -9,18 +9,21 @@ import java.util.*;
 
 public enum Pictures {
 
-    ONE("resources/ONE.png"),
-    TWO("resources/TWO.png"),
-    THREE("resources/THREE.png"),
-    FOUR("resources/FOUR.png"),
-    FIVE("resources/FIVE.png"),
-    SIX("resources/SIX.png"),
-    SEVEN("resources/SEVEN.png"),
-    EIGHT("resources/EIGHT.png"),
-    BLOCKED("resources/BOX_NORMAL.png"),
-    OPEN("resources/FIELD_OPEN.png"),
-    FLAG("resources/BOX_BLOCKED.png"),
-    BOMB("resources/RABBIT.png");
+    ONE("images/ONE.png"),
+    TWO("images/TWO.png"),
+    THREE("images/THREE.png"),
+    FOUR("images/FOUR.png"),
+    FIVE("images/FIVE.png"),
+    SIX("images/SIX.png"),
+    SEVEN("images/SEVEN.png"),
+    EIGHT("images/EIGHT.png"),
+    BLOCKED("images/BOX_NORMAL.png"),
+    OPEN("images/FIELD_OPEN.png"),
+    FLAG("images/BOX_BLOCKED.png"),
+    BOMB("images/RABBIT.png"),
+    CARROTCURSOR("images/CARROT_CURSOR.png");
+
+    private final boolean DEBUG = true;
 
     private String path;
     Map<String, Image> imageMap = new HashMap<>();
@@ -29,19 +32,26 @@ public enum Pictures {
         this.path = path;
     }
 
-    public Image image() {
+    public Image image(boolean isCursor) {
         if (imageMap.containsKey(path)) {
             return imageMap.get(path);
         } else {
             BufferedImage image;
             try {
-                image = ImageIO.read(new File(path));
+                if (DEBUG){
+                    image = ImageIO.read(new File("resources/" + path));
+                }else{
+                    image = ImageIO.read(getClass().getResource("/"+path));
+                }
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            Image scaledImage = image.getScaledInstance(GameBoard.FIELD_MEASURE, GameBoard.FIELD_MEASURE, Image.SCALE_SMOOTH);
-            imageMap.put(path, scaledImage);
-            return scaledImage;
+            if (!isCursor){
+                Image scaledImage = image.getScaledInstance(GameBoard.FIELD_MEASURE, GameBoard.FIELD_MEASURE, Image.SCALE_SMOOTH);
+                imageMap.put(path, scaledImage);
+                return scaledImage;
+            }
+            return image;
         }
     }
 }

@@ -16,8 +16,8 @@ public class GameFrame extends JFrame {
 
         //Quelle: http://dev.usw.at/manual/java/javainsel/javainsel_15_032.htm
         Cursor c = getToolkit().createCustomCursor(
-                new ImageIcon( "resources/CARROT_CURSOR.png" ).getImage(),
-                new Point(10,10), "Cursor" );
+                Pictures.CARROTCURSOR.image(true),
+                new Point(8,24), "Cursor" );
         setCursor( c );
         //Ende
     }

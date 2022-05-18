@@ -37,18 +37,17 @@ public class GameBoard extends JPanel{
     private void fieldClicked(MouseEvent e){
         int xCordinateClicked = e.getX()/FIELD_MEASURE;
         int yCordinateClicked = e.getY()/FIELD_MEASURE;
-        System.out.println(e.getX()+ ", " + e.getY());
-//        if (!(fieldMatrix[yCordinateClicked][xCordinateClicked].getBottomPictureIdentifier() == 'b')){
-//            fieldMatrix[yCordinateClicked][xCordinateClicked].pressed(e.getButton());
-//            repaint();
-//        }else{
-//            int input = JOptionPane.showConfirmDialog(null, "Willst du erneut spielen ?", "Erneut spielen ?",
-//                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-//            switch (input){
-//                case 0 -> System.out.println("Geht nicht!");
-//                case 1 -> System.out.println("Pech!");
-//            }
-//        }
+        if (!(fieldMatrix[yCordinateClicked][xCordinateClicked].getBottomPictureIdentifier() == 'b')){
+            fieldMatrix[yCordinateClicked][xCordinateClicked].pressed(e.getButton());
+            repaint();
+        }else{
+            int input = JOptionPane.showConfirmDialog(null, "Willst du erneut spielen ?", "Erneut spielen ?",
+                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+            switch (input){
+                case 0 -> System.out.println("Geht nicht!");
+                case 1 -> System.out.println("Pech!");
+            }
+        }
     }
 
     @Override

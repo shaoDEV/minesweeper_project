@@ -73,4 +73,12 @@ public class Field {
     public void setOpenFlag(boolean openFlag) {
         this.openFlag = openFlag;
     }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
 }

@@ -40,6 +40,7 @@ public class GameBoard extends JPanel{
         if (!(fieldMatrix[yCordinateClicked][xCordinateClicked].getBottomPictureIdentifier() == 'b')){
             fieldMatrix[yCordinateClicked][xCordinateClicked].pressed(e.getButton());
             repaint();
+            //searchAndOpen(fieldMatrix[yCordinateClicked][xCordinateClicked]);
         }else{
             int input = JOptionPane.showConfirmDialog(null, "Willst du erneut spielen ?", "Erneut spielen ?",
                     JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
@@ -49,6 +50,58 @@ public class GameBoard extends JPanel{
             }
         }
     }
+
+//    private void searchAndOpen(Field fieldToCheck){
+//        if (fieldToCheck.getY()/FIELD_MEASURE > 0 && fieldToCheck.getX()/FIELD_MEASURE > 0){
+//            if (!(fieldMatrix[fieldToCheck.getY()/FIELD_MEASURE-1][fieldToCheck.getX()/FIELD_MEASURE-1].getBottomPictureIdentifier() == 'b')){
+//                fieldMatrix[fieldToCheck.getY()/FIELD_MEASURE-1][fieldToCheck.getX()/FIELD_MEASURE-1].setOpenFlag(true);
+//                searchAndOpen(fieldMatrix[fieldToCheck.getY()/FIELD_MEASURE-1][fieldToCheck.getX()/FIELD_MEASURE-1]);
+//            }
+//        }
+//        if (fieldToCheck.getY()/FIELD_MEASURE > 0){
+//            if (!(fieldMatrix[fieldToCheck.getY()/FIELD_MEASURE-1][fieldToCheck.getX()/FIELD_MEASURE].getBottomPictureIdentifier() == 'b')){
+//                fieldMatrix[fieldToCheck.getY()/FIELD_MEASURE-1][fieldToCheck.getX()/FIELD_MEASURE].setOpenFlag(true);
+//                searchAndOpen(fieldMatrix[fieldToCheck.getY()/FIELD_MEASURE-1][fieldToCheck.getX()/FIELD_MEASURE]);
+//            }
+//        }
+//        if (fieldToCheck.getY()/FIELD_MEASURE > 0 && fieldToCheck.getX()/FIELD_MEASURE < FIELD_SIZE-1){
+//            if (!(fieldMatrix[fieldToCheck.getY()/FIELD_MEASURE-1][fieldToCheck.getX()/FIELD_MEASURE+1].getBottomPictureIdentifier() == 'b')){
+//                fieldMatrix[fieldToCheck.getY()/FIELD_MEASURE-1][fieldToCheck.getX()/FIELD_MEASURE+1].setOpenFlag(true);
+//                searchAndOpen(fieldMatrix[fieldToCheck.getY()/FIELD_MEASURE-1][fieldToCheck.getX()/FIELD_MEASURE+1]);
+//            }
+//        }
+//        if (fieldToCheck.getY()/FIELD_MEASURE < FIELD_SIZE-1 && fieldToCheck.getX()/FIELD_MEASURE > 0){
+//            if (!(fieldMatrix[fieldToCheck.getY()/FIELD_MEASURE+1][fieldToCheck.getX()/FIELD_MEASURE-1].getBottomPictureIdentifier() == 'b')){
+//                fieldMatrix[fieldToCheck.getY()/FIELD_MEASURE+1][fieldToCheck.getX()/FIELD_MEASURE-1].setOpenFlag(true);
+//                searchAndOpen(fieldMatrix[fieldToCheck.getY()/FIELD_MEASURE+1][fieldToCheck.getX()/FIELD_MEASURE-1]);
+//            }
+//        }
+//        if (fieldToCheck.getY()/FIELD_MEASURE < FIELD_SIZE-1) {
+//            if (!(fieldMatrix[fieldToCheck.getY()/FIELD_MEASURE + 1][fieldToCheck.getX()/FIELD_MEASURE].getBottomPictureIdentifier() == 'b')){
+//                fieldMatrix[fieldToCheck.getY()/FIELD_MEASURE + 1][fieldToCheck.getX()/FIELD_MEASURE].setOpenFlag(true);
+//                searchAndOpen(fieldMatrix[fieldToCheck.getY()/FIELD_MEASURE + 1][fieldToCheck.getX()/FIELD_MEASURE]);
+//            }
+//        }
+//        if (fieldToCheck.getY()/FIELD_MEASURE < FIELD_SIZE-1 && fieldToCheck.getX()/FIELD_MEASURE < FIELD_SIZE-1){
+//            if (!(fieldMatrix[fieldToCheck.getY()/FIELD_MEASURE+1][fieldToCheck.getX()/FIELD_MEASURE+1].getBottomPictureIdentifier() == 'b')){
+//                fieldMatrix[fieldToCheck.getY()/FIELD_MEASURE+1][fieldToCheck.getX()/FIELD_MEASURE+1].setOpenFlag(true);
+//                searchAndOpen(fieldMatrix[fieldToCheck.getY()/FIELD_MEASURE+1][fieldToCheck.getX()/FIELD_MEASURE+1]);
+//            }
+//        }
+//        if (fieldToCheck.getX()/FIELD_MEASURE < FIELD_SIZE-1){
+//            if (!(fieldMatrix[fieldToCheck.getY()/FIELD_MEASURE][fieldToCheck.getX()/FIELD_MEASURE+1].getBottomPictureIdentifier() == 'b')){
+//                fieldMatrix[fieldToCheck.getY()/FIELD_MEASURE][fieldToCheck.getX()/FIELD_MEASURE+1].setOpenFlag(true);
+//                searchAndOpen(fieldMatrix[fieldToCheck.getY()/FIELD_MEASURE][fieldToCheck.getX()/FIELD_MEASURE+1]);
+//            }
+//        }
+//        if (fieldToCheck.getX()/FIELD_MEASURE > 0){
+//            if (!(fieldMatrix[fieldToCheck.getY()/FIELD_MEASURE][fieldToCheck.getX()/FIELD_MEASURE-1].getBottomPictureIdentifier() == 'b')){
+//                fieldMatrix[fieldToCheck.getY()/FIELD_MEASURE][fieldToCheck.getX()/FIELD_MEASURE-1].setOpenFlag(true);
+//                searchAndOpen(fieldMatrix[fieldToCheck.getY()/FIELD_MEASURE][fieldToCheck.getX()/FIELD_MEASURE-1]);
+//            }
+//        }
+//        repaint();
+//    }
 
     @Override
     protected void paintComponent(Graphics g) {

@@ -20,7 +20,10 @@ public class GameBoard extends JPanel {
     private Field[][] fieldMatrix;
     private Field[] allFields;
 
+    public static PictureController pictureController;
+
     GameBoard() {
+        pictureController = PictureController.getInstanceOf(FIELD_MEASURE);
         this.setPreferredSize(new Dimension(BOARD_WIDTH, BOARD_HEIGHT));
         this.setBackground(Color.GRAY);
         fieldMatrix = new Field[FIELD_SIZE][FIELD_SIZE];

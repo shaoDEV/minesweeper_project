@@ -14,11 +14,11 @@ public class GameFrame extends JFrame {
         this.setVisible(true);
 
 
-        //Quelle: http://dev.usw.at/manual/java/javainsel/javainsel_15_032.htm
-        Cursor c = getToolkit().createCustomCursor(
-                Pictures.CARROTCURSOR.image(true),
-                new Point(8,24), "Cursor" );
-        setCursor( c );
-        //Ende
+//        //Quelle: http://dev.usw.at/manual/java/javainsel/javainsel_15_032.htm
+//        Cursor c = getToolkit().createCustomCursor(
+//                Pictures.CARROTCURSOR.image(true),
+//                new Point(8,24), "Cursor" );
+//        setCursor( c );
+//        //Ende
     }
 }

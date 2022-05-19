@@ -9,19 +9,19 @@ import java.util.*;
 
 public enum Pictures {
 
-    ONE("images/ONE.png"),
-    TWO("images/TWO.png"),
-    THREE("images/THREE.png"),
-    FOUR("images/FOUR.png"),
-    FIVE("images/FIVE.png"),
-    SIX("images/SIX.png"),
-    SEVEN("images/SEVEN.png"),
-    EIGHT("images/EIGHT.png"),
+    ONE("images/0/1.png"),
+    TWO("images/0/2.png"),
+    THREE("images/0/3.png"),
+    FOUR("images/0/4.png"),
+    FIVE("images/0/5.png"),
+    SIX("images/0/6.png"),
+    SEVEN("images/0/7.png"),
+    EIGHT("images/0/8.png"),
     BLOCKED("images/BOX_NORMAL.png"),
-    OPEN("images/FIELD_OPEN.png"),
+    OPEN("images/0/block_open.png"),
     FLAG("images/BOX_BLOCKED.png"),
     BOMB("images/RABBIT.png"),
-    CARROTCURSOR("images/CARROT_CURSOR.png");
+    CARROTCURSOR("images/cursor.png");
 
     private final boolean DEBUG = true;
 

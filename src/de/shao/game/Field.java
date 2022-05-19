@@ -31,33 +31,21 @@ public class Field {
     public void drawField(Graphics2D g2d) {
         Image image;
         if (openFlag) {
-            switch (bottomPictureIdentifier) {
-                case '1' -> image = Pictures.ONE.image(false);
-                case '2' -> image = Pictures.TWO.image(false);
-                case '3' -> image = Pictures.THREE.image(false);
-                case '4' -> image = Pictures.FOUR.image(false);
-                case '5' -> image = Pictures.FIVE.image(false);
-                case '6' -> image = Pictures.SIX.image(false);
-                case '7' -> image = Pictures.SEVEN.image(false);
-                case '8' -> image = Pictures.EIGHT.image(false);
-                case 'b' -> image = Pictures.BOMB.image(false);
-                default -> image = Pictures.OPEN.image(false);
-            }
-        } else if (blockedFlag) {
-            image = Pictures.FLAG.image(false);
-        } else {
-            image = Pictures.BLOCKED.image(false);
-        }
+            if (bottomPictureIdentifier == 'b') image = GameBoard.pictureController.getBomb();
+            else if (bottomPictureIdentifier == ' ') image = GameBoard.pictureController.getBlock(true);
+            else image = GameBoard.pictureController.getNumber(bottomPictureIdentifier);
+        } else if (blockedFlag) image = GameBoard.pictureController.getFlag();
+        else image = GameBoard.pictureController.getBlock(false);
         g2d.drawImage(image, x, y, null);
     }
 
-    public void pressed(int mouseButton){
+    public void pressed(int mouseButton) {
         //Linke Maustaste
-        if (mouseButton == 1){
+        if (mouseButton == 1) {
             if (!openFlag && !blockedFlag) openFlag = true;
         }
         //Rechte Maustaste
-        if (mouseButton == 3){
+        if (mouseButton == 3) {
             if (!openFlag) blockedFlag = !blockedFlag;
         }
     }

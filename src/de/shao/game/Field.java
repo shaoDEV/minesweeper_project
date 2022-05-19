@@ -74,6 +74,10 @@ public class Field {
         this.openFlag = openFlag;
     }
 
+    public boolean isOpenFlag() {
+        return openFlag;
+    }
+
     public int getX() {
         return x;
     }

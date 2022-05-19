@@ -94,6 +94,7 @@ public class PictureController {
         loadBlocks();
         loadNumbers();
         loadBomb();
+        loadFlag();
     }
 
     private Image scaleImage(BufferedImage imageToScale) {

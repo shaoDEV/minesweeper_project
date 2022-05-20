@@ -1,4 +1,4 @@
-package de.shao.game;
+package de.shao.driver;
 
 import javax.imageio.ImageIO;
 import java.awt.*;

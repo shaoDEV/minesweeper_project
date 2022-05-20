@@ -3,7 +3,7 @@ package de.shao.game;
 import javax.swing.*;
 
 
-public class Application {
+public class GameRunner {
 
 
     public static void main(String[] args) {

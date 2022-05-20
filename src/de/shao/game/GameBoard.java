@@ -1,5 +1,7 @@
 package de.shao.game;
 
+import de.shao.driver.PictureController;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;

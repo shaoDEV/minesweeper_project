@@ -4,8 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.font.TextHitInfo;
 import java.util.Random;
 
 public class GameBoard extends JPanel {
@@ -20,7 +18,11 @@ public class GameBoard extends JPanel {
     private Field[][] fieldMatrix;
     private Field[] allFields;
 
+    private int flagsPlaced = 0;
+    public static PictureController pictureController;
+
     GameBoard() {
+        pictureController = PictureController.getInstanceOf(FIELD_MEASURE);
         this.setPreferredSize(new Dimension(BOARD_WIDTH, BOARD_HEIGHT));
         this.setBackground(Color.GRAY);
         fieldMatrix = new Field[FIELD_SIZE][FIELD_SIZE];
@@ -35,20 +37,32 @@ public class GameBoard extends JPanel {
     }
 
     private void fieldClicked(MouseEvent e) {
-        int xCordinateClicked = e.getX() / FIELD_MEASURE;
-        int yCordinateClicked = e.getY() / FIELD_MEASURE;
-        if (!(fieldMatrix[yCordinateClicked][xCordinateClicked].getBottomPictureIdentifier() == 'b')) {
-            fieldMatrix[yCordinateClicked][xCordinateClicked].pressed(e.getButton());
-            repaint();
-            searchAndOpen(fieldMatrix[yCordinateClicked][xCordinateClicked]);
-        } else {
-            int input = JOptionPane.showConfirmDialog(null, "Willst du erneut spielen ?", "Erneut spielen ?",
-                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-            switch (input) {
-                case 0 -> System.out.println("Geht nicht!");
-                case 1 -> System.out.println("Pech!");
+        Field handledField = fieldMatrix[e.getY()/FIELD_MEASURE][e.getX()/FIELD_MEASURE];
+        if (e.getButton() == 3){
+            if (flagsPlaced < BOMB_COUNT && !handledField.isOpen() && !handledField.isFlagged()){
+                handledField.setFlagged(true);
+                flagsPlaced++;
+            }
+            else if (handledField.isFlagged()){
+                handledField.setFlagged(false);
+                flagsPlaced--;
+            }
+        } else if (e.getButton() == 1){
+            if (!handledField.isOpen() && !handledField.isFlagged()){
+                if (handledField.getBottomPictureIdentifier() == 'b') lostRound();
+                else if (!handledField.isFlagged()){
+                    handledField.setOpen(true);
+                    searchAndOpen(handledField);
+                }
             }
         }
+        repaint();
+    }
+
+    private void lostRound(){
+        for (Field field : allFields) if (field.getBottomPictureIdentifier() == 'b') field.setOpen(true);
+        repaint();
+        System.out.println("verloren");
     }
 
     private void searchAndOpen(Field fieldToCheck) {
@@ -58,11 +72,11 @@ public class GameBoard extends JPanel {
         //Mit freundlicher Unterstzung von Borgi
         for (int i = fieldToCheckX - 1; i < fieldToCheckX + 2; i++) {
             for (int j = fieldToCheckY - 1; j < fieldToCheckY + 2; j++) {
-                if (i >= 0 && i < 10 && j >= 0 && j < 10 && fieldToCheck.getBottomPictureIdentifier() == ' ') {
-                    Field checkField = fieldMatrix[j][i];
-                    if (checkField.getBottomPictureIdentifier() != 'b' && !checkField.isOpenFlag()) {
-                        checkField.setOpenFlag(true);
-                        searchAndOpen(checkField);
+                if (i >= 0 && i < FIELD_SIZE && j >= 0 && j < FIELD_SIZE && fieldToCheck.getBottomPictureIdentifier() == ' ') {
+                    Field nextField = fieldMatrix[j][i];
+                    if (nextField.getBottomPictureIdentifier() != 'b' && !nextField.isOpen() && !nextField.isFlagged()) {
+                        nextField.setOpen(true);
+                        searchAndOpen(nextField);
                     }
                 }
             }
@@ -101,19 +115,17 @@ public class GameBoard extends JPanel {
 
     private void setRandomBombs() {
         int bombsLeft = BOMB_COUNT;
-        int maxiumFields = allFields.length;
         Random random = new Random();
         int randomField;
 
         while (bombsLeft > 0) {
-            randomField = random.nextInt(maxiumFields);
+            randomField = random.nextInt(allFields.length);
             if (!(allFields[randomField].getBottomPictureIdentifier() == 'b')) {
                 allFields[randomField].setBottomPictureIdentifier('b');
-                allFields[randomField].setOpenFlag(true);
-                this.repaint();
                 bombsLeft--;
             }
         }
+        this.repaint();
     }
 
     private void setNumbers() {

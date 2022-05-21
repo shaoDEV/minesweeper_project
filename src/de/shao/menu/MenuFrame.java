@@ -11,7 +11,7 @@ public class MenuFrame extends JFrame{
     private final int MENU_HEIGHT = 800;
 
     public MenuFrame() {
-        this.add(new MenuPanel());
+        this.add(new MenuPanel(this));
         this.setSize(new Dimension(MENU_WIDTH,MENU_HEIGHT));
         this.setUndecorated(true);
         this.setLocationRelativeTo(null);

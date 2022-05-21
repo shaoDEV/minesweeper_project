@@ -68,24 +68,24 @@ public class PictureController {
         imageLoader();
     }
 
-    public static PictureController getInstanceOf(int skinSet, int scaleToSize) {
-        if (thisController != null) return thisController;
-        else return new PictureController(skinSet, scaleToSize);
+    public static PictureController getPictureController(int skinSet, int scaleToSize) {
+        thisController = new PictureController(skinSet, scaleToSize);
+        return thisController;
     }
 
-    public static PictureController getInstanceOf(int cursor, int blocks, int numbers, int bomb, int flag, int scaleToSize) {
-        if (thisController != null) return thisController;
-        else return new PictureController(cursor, blocks, numbers, bomb, flag, scaleToSize);
+    public static PictureController getPictureController(int cursor, int blocks, int numbers, int bomb, int flag, int scaleToSize) {
+        thisController = new PictureController(cursor, blocks, numbers, bomb, flag, scaleToSize);
+        return thisController;
     }
 
-    public static PictureController getInstanceOf() {
-        if (thisController != null) return thisController;
-        else return new PictureController();
+    public static PictureController getPictureController() {
+        thisController = new PictureController();
+        return thisController;
     }
 
-    public static PictureController getInstanceOf(int scaleToSize){
-        if (thisController != null) return thisController;
-        else return new PictureController(scaleToSize);
+    public static PictureController getPictureController(int scaleToSize){
+        thisController = new PictureController(scaleToSize);
+        return thisController;
     }
 
     private void imageLoader() {

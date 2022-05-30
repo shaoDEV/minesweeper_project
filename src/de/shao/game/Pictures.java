@@ -9,7 +9,7 @@ import java.util.*;
 
 public enum Pictures {
 
-    ONE("images/ONE.png"),
+    ONE("images/system/pixelGhostGif.gif"),
     TWO("images/TWO.png"),
     THREE("images/THREE.png"),
     FOUR("images/FOUR.png"),
@@ -46,11 +46,11 @@ public enum Pictures {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            if (!isCursor){
-                Image scaledImage = image.getScaledInstance(GameBoard.FIELD_MEASURE, GameBoard.FIELD_MEASURE, Image.SCALE_SMOOTH);
-                imageMap.put(path, scaledImage);
-                return scaledImage;
-            }
+//            if (!isCursor){
+//                Image scaledImage = image.getScaledInstance(GameBoard.FIELD_MEASURE, GameBoard.FIELD_MEASURE, Image.SCALE_SMOOTH);
+//                imageMap.put(path, scaledImage);
+//                return scaledImage;
+//            }
             return image;
         }
     }

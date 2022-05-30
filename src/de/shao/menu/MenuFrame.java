@@ -7,8 +7,8 @@ import java.awt.*;
 
 public class MenuFrame extends JFrame{
 
-    private final int MENU_WIDTH = 1200;
-    private final int MENU_HEIGHT = 800;
+    private final int MENU_WIDTH = 700;
+    private final int MENU_HEIGHT = 500;
 
     public MenuFrame() {
         this.add(new MenuPanel(this));

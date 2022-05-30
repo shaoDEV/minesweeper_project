@@ -2,10 +2,14 @@ package de.shao.game;
 
 import de.shao.driver.PictureController;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.Random;
 
 public class GameBoard extends JPanel {
@@ -14,8 +18,8 @@ public class GameBoard extends JPanel {
     private final int FIELD_SIZE = 10;
     private final int BOMB_COUNT = FIELD_SIZE;
 
-    private final int BOARD_WIDTH = FIELD_MEASURE * FIELD_SIZE + 1;
-    private final int BOARD_HEIGHT = BOARD_WIDTH;
+    private final int BOARD_WIDTH = 612;
+    private final int BOARD_HEIGHT = 624;
 
     private Field[][] fieldMatrix;
     private Field[] allFields;
@@ -26,7 +30,7 @@ public class GameBoard extends JPanel {
     GameBoard() {
         pictureController = PictureController.getPictureController(FIELD_MEASURE);
         this.setPreferredSize(new Dimension(BOARD_WIDTH, BOARD_HEIGHT));
-        this.setBackground(Color.GRAY);
+        this.setBackground(new Color(1.0f, 1.0f, 1.0f, 0.0f));
         fieldMatrix = new Field[FIELD_SIZE][FIELD_SIZE];
         allFields = new Field[FIELD_SIZE * FIELD_SIZE];
         init();
@@ -39,7 +43,7 @@ public class GameBoard extends JPanel {
     }
 
     private void fieldClicked(MouseEvent e) {
-        Field handledField = fieldMatrix[e.getY()/FIELD_MEASURE][e.getX()/FIELD_MEASURE];
+        Field handledField = fieldMatrix[(e.getY())/FIELD_MEASURE][(e.getX())/FIELD_MEASURE];
         if (e.getButton() == 3){
             if (flagsPlaced < BOMB_COUNT && !handledField.isOpen() && !handledField.isFlagged()){
                 handledField.setFlagged(true);
@@ -88,7 +92,15 @@ public class GameBoard extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        drawFields((Graphics2D) g);
+        Graphics2D g2d = (Graphics2D) g;
+        BufferedImage image;
+        try {
+            image = ImageIO.read(new File("resources/images/system/10x10.png"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        g2d.drawImage(image, 0,0, null);
+        drawFields(g2d);
     }
 
     private void init() {
@@ -96,7 +108,7 @@ public class GameBoard extends JPanel {
         for (int verticalPosition = 0; verticalPosition < fieldMatrix.length; verticalPosition++) {
             for (int horizontalPosition = 0; horizontalPosition < fieldMatrix[verticalPosition].length; horizontalPosition++) {
 
-                Field tempField = new Field(horizontalPosition * FIELD_MEASURE, verticalPosition * FIELD_MEASURE);
+                Field tempField = new Field((horizontalPosition * FIELD_MEASURE) + 66, (verticalPosition * FIELD_MEASURE) + 72);
 
                 allFields[fielsGenerated] = tempField;
 

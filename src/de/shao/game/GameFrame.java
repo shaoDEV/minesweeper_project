@@ -7,10 +7,10 @@ public class GameFrame extends JFrame {
 
     GameFrame(){
         this.add(new GameBoard());
-        this.pack();
-        this.setResizable(false);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setSize(new Dimension(612,624));
+        this.setUndecorated(true);
         this.setLocationRelativeTo(null);
+        this.setBackground(new Color(1.0f, 1.0f, 1.0f, 0.0f));
         this.setVisible(true);
 
 

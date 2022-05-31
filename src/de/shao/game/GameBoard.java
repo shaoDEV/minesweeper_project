@@ -27,12 +27,20 @@ public class GameBoard extends JPanel {
     private int flagsPlaced = 0;
     public static PictureController pictureController;
 
-    GameBoard() {
+    private boolean firstClick = false;
+
+    private JFrame sirFrameALot = null;
+    private GameBoardBackground backgroundPanel = null;
+
+    GameBoard(JFrame frame, GameBoardBackground backgroundPanel) {
+        sirFrameALot = frame;
+        this.backgroundPanel = backgroundPanel;
         this.setBounds(66,72,BOARD_WIDTH,BOARD_HEIGHT);
-        pictureController = PictureController.getPictureController(FIELD_MEASURE);
+        pictureController = PictureController.getPictureController(1, FIELD_MEASURE);
         this.setPreferredSize(new Dimension(BOARD_WIDTH, BOARD_HEIGHT));
         fieldMatrix = new Field[FIELD_SIZE][FIELD_SIZE];
         allFields = new Field[FIELD_SIZE * FIELD_SIZE];
+        this.setBackground(new Color(1.0f, 1.0f, 1.0f, 0.0f));
         init();
         this.addMouseListener(new MouseAdapter() {
             @Override
@@ -40,6 +48,7 @@ public class GameBoard extends JPanel {
                 fieldClicked(e);
             }
         });
+
     }
 
     private void fieldClicked(MouseEvent e) {
@@ -48,10 +57,14 @@ public class GameBoard extends JPanel {
             if (flagsPlaced < BOMB_COUNT && !handledField.isOpen() && !handledField.isFlagged()){
                 handledField.setFlagged(true);
                 flagsPlaced++;
+                backgroundPanel.setFlagsLeft(BOMB_COUNT - flagsPlaced);
+                redrawOuterObjects();
             }
             else if (handledField.isFlagged()){
                 handledField.setFlagged(false);
                 flagsPlaced--;
+                backgroundPanel.setFlagsLeft(BOMB_COUNT - flagsPlaced);
+                redrawOuterObjects();
             }
         } else if (e.getButton() == 1){
             if (!handledField.isOpen() && !handledField.isFlagged()){
@@ -59,14 +72,17 @@ public class GameBoard extends JPanel {
                 else if (!handledField.isFlagged()){
                     handledField.setOpen(true);
                     searchAndOpen(handledField);
+                    redrawOuterObjects();
                 }
             }
         }
+        redrawOuterObjects();
         repaint();
     }
 
     private void lostRound(){
         for (Field field : allFields) if (field.getBottomPictureIdentifier() == 'b') field.setOpen(true);
+        redrawOuterObjects();
         repaint();
         System.out.println("verloren");
     }
@@ -94,6 +110,11 @@ public class GameBoard extends JPanel {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
         drawFields(g2d);
+    }
+
+    private void redrawOuterObjects(){
+        backgroundPanel.repaint();
+        sirFrameALot.repaint();
     }
 
     private void init() {

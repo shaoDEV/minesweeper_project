@@ -160,6 +160,7 @@ public class PictureController {
                 scaledBlockImages.add(scaleImage(image));
                 image = ImageIO.read(new File("resources/images/" + blocks + "/block_open.png"));
                 scaledBlockImages.add(scaleImage(image));
+
             } else {
                 image = ImageIO.read(getClass().getResource("/images/" + blocks + "/block_closed.png"));
                 scaledBlockImages.add(scaleImage(image));
@@ -215,11 +216,15 @@ public class PictureController {
                 systemResources.put("backToMenu", image);
                 image = ImageIO.read(new File("resources/images/system/startNewGame.png"));
                 systemResources.put("startNewGame", image);
+                image = ImageIO.read(new File("resources/images/system/10x10_10.png"));
+                systemResources.put("background", image);
             }else{
                 image = ImageIO.read(getClass().getResource("resources/images/system/backToMenu.png"));
                 systemResources.put("backToMenu", image);
                 image = ImageIO.read(getClass().getResource("resources/images/system/startNewGame.png"));
                 systemResources.put("startNewGame", image);
+                image = ImageIO.read(getClass().getResource("resources/images/system/10x10_10.png"));
+                systemResources.put("background", image);
             }
         } catch (IOException e) {
             e.printStackTrace();

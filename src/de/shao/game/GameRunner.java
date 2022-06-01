@@ -7,7 +7,7 @@ public class GameRunner {
 
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new GameFrame());
+        SwingUtilities.invokeLater(() -> new GameFrame(663, 630));
     }
 
 

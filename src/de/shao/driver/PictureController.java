@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class PictureController {
 
@@ -22,6 +23,7 @@ public class PictureController {
 
     private ArrayList<Image> scaledBlockImages = new ArrayList<>();
     private ArrayList<Image> scaledNumberImages = new ArrayList<>();
+    private HashMap<String, Image> systemResources = new HashMap<String, Image>();
     private Image cursorImage;
     private Image scaledBombImage;
     private Image scaledFlagImage;
@@ -95,6 +97,7 @@ public class PictureController {
         loadNumbers();
         loadBomb();
         loadFlag();
+        loadSystemResources();
     }
 
     private Image scaleImage(BufferedImage imageToScale) {
@@ -202,6 +205,29 @@ public class PictureController {
             throw new RuntimeException(e);
         }
         scaledBombImage = scaleImage(image);
+    }
+
+    private void loadSystemResources(){
+        BufferedImage image;
+        try {
+            if (DEBUG) {
+                image = ImageIO.read(new File("resources/images/system/backToMenu.png"));
+                systemResources.put("backToMenu", image);
+                image = ImageIO.read(new File("resources/images/system/startNewGame.png"));
+                systemResources.put("startNewGame", image);
+            }else{
+                image = ImageIO.read(getClass().getResource("resources/images/system/backToMenu.png"));
+                systemResources.put("backToMenu", image);
+                image = ImageIO.read(getClass().getResource("resources/images/system/startNewGame.png"));
+                systemResources.put("startNewGame", image);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Image getSystemResources(String resourceName){
+        return systemResources.get(resourceName);
     }
 
     public Image getBomb(){

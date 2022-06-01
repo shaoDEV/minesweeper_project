@@ -14,12 +14,12 @@ import java.util.Random;
 
 public class GameBoard extends JPanel {
 
-    public static final int FIELD_MEASURE = 48; //Groeße der Bilder
-    private final int FIELD_SIZE = 10;
-    private final int BOMB_COUNT = FIELD_SIZE;
+    public static int fieldMeasure = 0; //Groeße der Bilder
+    private int fieldSize = 0;
+    private int bombCount = 0;
 
-    private final int BOARD_WIDTH = FIELD_SIZE * FIELD_MEASURE;
-    private final int BOARD_HEIGHT = BOARD_WIDTH;
+    private int boardWidth = 0;
+    private int boardHeight = 0;
 
     private Field[][] fieldMatrix;
     private Field[] allFields;
@@ -27,50 +27,59 @@ public class GameBoard extends JPanel {
     private int flagsPlaced = 0;
     public static PictureController pictureController;
 
-    private boolean firstClick = false;
+    private boolean gameIsOver = false;
+    private boolean lostRound = false;
 
     private JFrame sirFrameALot = null;
     private GameBoardBackground backgroundPanel = null;
 
-    GameBoard(JFrame frame, GameBoardBackground backgroundPanel) {
+    GameBoard(JFrame frame, GameBoardBackground backgroundPanel, int fieldSize, int fieldMeasure) {
+        this.fieldSize = fieldSize;
+        GameBoard.fieldMeasure = fieldMeasure;
         sirFrameALot = frame;
         this.backgroundPanel = backgroundPanel;
-        this.setBounds(66,72,BOARD_WIDTH,BOARD_HEIGHT);
-        pictureController = PictureController.getPictureController(1, FIELD_MEASURE);
-        this.setPreferredSize(new Dimension(BOARD_WIDTH, BOARD_HEIGHT));
-        fieldMatrix = new Field[FIELD_SIZE][FIELD_SIZE];
-        allFields = new Field[FIELD_SIZE * FIELD_SIZE];
+
+        this.boardWidth = fieldSize * fieldMeasure;
+        this.boardHeight = this.boardWidth;
+        this.bombCount = this.fieldSize;
+
+        this.setBounds(66,72, boardWidth, boardHeight);
+        pictureController = PictureController.getPictureController(1, fieldMeasure);
+        this.setPreferredSize(new Dimension(boardWidth, boardHeight));
+        fieldMatrix = new Field[fieldSize][fieldSize];
+        allFields = new Field[fieldSize * fieldSize];
         this.setBackground(new Color(1.0f, 1.0f, 1.0f, 0.0f));
         init();
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                fieldClicked(e);
+                if (gameIsOver == false) fieldClicked(e);
             }
         });
+
 
     }
 
     private void fieldClicked(MouseEvent e) {
-        Field handledField = fieldMatrix[(e.getY())/FIELD_MEASURE][(e.getX())/FIELD_MEASURE];
+        Field handledField = fieldMatrix[(e.getY())/ fieldMeasure][(e.getX())/ fieldMeasure];
         if (e.getButton() == 3){
-            if (flagsPlaced < BOMB_COUNT && !handledField.isOpen() && !handledField.isFlagged()){
+            if (flagsPlaced < bombCount && !handledField.isOpen() && !handledField.isFlagged()){
                 handledField.setFlagged(true);
                 flagsPlaced++;
-                backgroundPanel.setFlagsLeft(BOMB_COUNT - flagsPlaced);
+                backgroundPanel.setFlagsLeft(bombCount - flagsPlaced);
                 redrawOuterObjects();
             }
             else if (handledField.isFlagged()){
                 handledField.setFlagged(false);
                 flagsPlaced--;
-                backgroundPanel.setFlagsLeft(BOMB_COUNT - flagsPlaced);
+                backgroundPanel.setFlagsLeft(bombCount - flagsPlaced);
                 redrawOuterObjects();
             }
         } else if (e.getButton() == 1){
             if (!handledField.isOpen() && !handledField.isFlagged()){
-                if (handledField.getBottomPictureIdentifier() == 'b') lostRound();
-                else if (!handledField.isFlagged()){
+                if (!handledField.isFlagged()){
                     handledField.setOpen(true);
+                    checkEndOfGame();
                     searchAndOpen(handledField);
                     redrawOuterObjects();
                 }
@@ -80,21 +89,16 @@ public class GameBoard extends JPanel {
         repaint();
     }
 
-    private void lostRound(){
-        for (Field field : allFields) if (field.getBottomPictureIdentifier() == 'b') field.setOpen(true);
-        redrawOuterObjects();
-        repaint();
-        System.out.println("verloren");
-    }
+
 
     private void searchAndOpen(Field fieldToCheck) {
-        int fieldToCheckY = fieldToCheck.getY() / FIELD_MEASURE;
-        int fieldToCheckX = fieldToCheck.getX() / FIELD_MEASURE;
+        int fieldToCheckY = fieldToCheck.getY() / fieldMeasure;
+        int fieldToCheckX = fieldToCheck.getX() / fieldMeasure;
 
         //Mit freundlicher Unterstzung von Borgi
         for (int i = fieldToCheckX - 1; i < fieldToCheckX + 2; i++) {
             for (int j = fieldToCheckY - 1; j < fieldToCheckY + 2; j++) {
-                if (i >= 0 && i < FIELD_SIZE && j >= 0 && j < FIELD_SIZE && fieldToCheck.getBottomPictureIdentifier() == ' ') {
+                if (i >= 0 && i < fieldSize && j >= 0 && j < fieldSize && fieldToCheck.getBottomPictureIdentifier() == ' ') {
                     Field nextField = fieldMatrix[j][i];
                     if (nextField.getBottomPictureIdentifier() != 'b' && !nextField.isOpen() && !nextField.isFlagged()) {
                         nextField.setOpen(true);
@@ -110,6 +114,46 @@ public class GameBoard extends JPanel {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
         drawFields(g2d);
+        if (gameIsOver) drawEndMenu(g2d);
+    }
+
+    private void drawEndMenu(Graphics2D g2d){
+        if (lostRound) {
+            System.out.println("Verloren!");
+            System.out.println(pictureController.getSystemResources("startNewGame"));
+            g2d.drawImage(pictureController.getSystemResources("startNewGame"), (boardWidth/2)-150,(boardHeight/2)-50, null);
+            g2d.drawImage(pictureController.getSystemResources("backToMenu"), (boardWidth/2)-150,(boardHeight/2)+50, null);
+        } else {
+            System.out.println("Gewonnen!");
+        }
+    }
+
+    private void lostRound(){
+        for (Field field : allFields) if (field.getBottomPictureIdentifier() == 'b') field.setOpen(true);
+        gameIsOver = true;
+        lostRound = true;
+        redrawOuterObjects();
+        repaint();
+    }
+
+    private void wonRound(){
+        gameIsOver = true;
+        redrawOuterObjects();
+        repaint();
+    }
+
+    private void checkEndOfGame(){
+        int fieldsOpened = 0;
+        for (Field field : allFields) {
+            if (field.isOpen() && field.getBottomPictureIdentifier() == 'b'){
+                lostRound();
+            } else if (field.isOpen()){
+                fieldsOpened++;
+            }
+        }
+        if (fieldsOpened >= allFields.length - bombCount){
+            wonRound();
+        }
     }
 
     private void redrawOuterObjects(){
@@ -122,7 +166,7 @@ public class GameBoard extends JPanel {
         for (int verticalPosition = 0; verticalPosition < fieldMatrix.length; verticalPosition++) {
             for (int horizontalPosition = 0; horizontalPosition < fieldMatrix[verticalPosition].length; horizontalPosition++) {
 
-                Field tempField = new Field((horizontalPosition * FIELD_MEASURE), (verticalPosition * FIELD_MEASURE));
+                Field tempField = new Field((horizontalPosition * fieldMeasure), (verticalPosition * fieldMeasure));
 
                 allFields[fielsGenerated] = tempField;
 
@@ -142,7 +186,7 @@ public class GameBoard extends JPanel {
     }
 
     private void setRandomBombs() {
-        int bombsLeft = BOMB_COUNT;
+        int bombsLeft = bombCount;
         Random random = new Random();
         int randomField;
 
@@ -161,8 +205,8 @@ public class GameBoard extends JPanel {
             for (int horizontalPosition = 0; horizontalPosition < fieldMatrix[verticalPosition].length; horizontalPosition++) {
 
                 Field fieldToCheck = fieldMatrix[verticalPosition][horizontalPosition];
-                int fieldToCheckY = fieldToCheck.getY() / FIELD_MEASURE;
-                int fieldToCheckX = fieldToCheck.getX() / FIELD_MEASURE;
+                int fieldToCheckY = fieldToCheck.getY() / fieldMeasure;
+                int fieldToCheckX = fieldToCheck.getX() / fieldMeasure;
                 if (fieldToCheck.getBottomPictureIdentifier() != 'b') {
                     int nearBombs = 0;
                     for (int i = fieldToCheckX - 1; i < fieldToCheckX + 2; i++) {

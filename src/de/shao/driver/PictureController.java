@@ -217,14 +217,18 @@ public class PictureController {
                 image = ImageIO.read(new File("resources/images/system/startNewGame.png"));
                 systemResources.put("startNewGame", image);
                 image = ImageIO.read(new File("resources/images/system/10x10.png"));
-                systemResources.put("background", image);
+                systemResources.put("background10", image);
+                image = ImageIO.read(new File("resources/images/system/16x16.png"));
+                systemResources.put("background16", image);
             }else{
                 image = ImageIO.read(getClass().getResource("resources/images/system/backToMenu.png"));
                 systemResources.put("backToMenu", image);
                 image = ImageIO.read(getClass().getResource("resources/images/system/startNewGame.png"));
                 systemResources.put("startNewGame", image);
                 image = ImageIO.read(getClass().getResource("resources/images/system/10x10.png"));
-                systemResources.put("background", image);
+                systemResources.put("background10", image);
+                image = ImageIO.read(getClass().getResource("resources/images/system/16x16.png"));
+                systemResources.put("background16", image);
             }
         } catch (IOException e) {
             e.printStackTrace();

@@ -27,7 +27,7 @@ public class GameFrame extends JFrame {
         setBackground(new Color(1.0f, 1.0f, 1.0f, 0.0f));
         setVisible(true);
 
-        add(new GameBoard(frameWidth, frameHeight, pictureController));
+        add(new GameBoard(this, frameWidth, frameHeight, pictureController, 20, 16));
     }
 
 }

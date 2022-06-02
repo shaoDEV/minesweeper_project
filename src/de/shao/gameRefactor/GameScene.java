@@ -15,7 +15,7 @@ public class GameScene {
     private int bombCount = 0;
     private int flagsPlaced = 0;
 
-    private boolean activeGame = true;
+    private Boolean activeGame = null;
     private boolean gameWon = false;
 
     private Field[][] fieldMatrix;
@@ -60,9 +60,13 @@ public class GameScene {
         for (Field field : allFields) {
             field.drawField(g2d);
         }
+
         //Zeichne die visuelle Darstellung der noch über bleibenden Flaggen
         g2d.setColor(Color.GREEN);
-        g2d.fillRect(bottomRightBackgroundCorner.x - 36, bottomRightBackgroundCorner.y - 468 + (flagsPlaced * 30), 18, 300 - (flagsPlaced * 30));
+        int tileSizeEachBomb = 300/bombCount;
+        int firstTileSize = tileSizeEachBomb + (300%bombCount); //Die genau Größe für das erste Teil um den evtl. entstehenden Rest abzufangen
+        if (flagsPlaced == 1) g2d.fillRect(bottomRightBackgroundCorner.x - 39, bottomRightBackgroundCorner.y - 468 + firstTileSize, 18, 300 - firstTileSize);
+        else g2d.fillRect(bottomRightBackgroundCorner.x - 39, bottomRightBackgroundCorner.y - 468 + (tileSizeEachBomb * flagsPlaced), 18, 300 - (tileSizeEachBomb * flagsPlaced));
     }
 
     private void setRandomBombs() {
@@ -89,7 +93,7 @@ public class GameScene {
                     int nearBombs = 0;
                     for (int i = horizontalPosition - 1; i < horizontalPosition + 2; i++) {
                         for (int j = verticalPosition - 1; j < verticalPosition + 2; j++) {
-                            if (i >= 0 && i < 10 && j >= 0 && j < 10) {
+                            if (i >= 0 && i < fieldSize && j >= 0 && j < fieldSize) {
                                 Field checkField = fieldMatrix[j][i];
                                 if (checkField.getBottomPictureIdentifier() == 'b') {
                                     nearBombs++;
@@ -123,8 +127,10 @@ public class GameScene {
     }
 
     public void sceneInteraction(MouseEvent mouseEvent) {
+        activeGame = true;
         Field handledField = fieldMatrix[(mouseEvent.getY() - sceneCorner.y) / fieldMeasure][(mouseEvent.getX() - sceneCorner.x) / fieldMeasure];
         if (mouseEvent.getButton() == 3) {
+
             if (flagsPlaced < bombCount && !handledField.isOpen() && !handledField.isFlagged()) {
                 handledField.setFlagged(true);
                 flagsPlaced++;
@@ -133,6 +139,7 @@ public class GameScene {
                 flagsPlaced--;
             }
         } else if (mouseEvent.getButton() == 1) {
+
             if (!handledField.isOpen() && !handledField.isFlagged()) {
                 if (!handledField.isFlagged()) {
                     handledField.setOpen(true);
@@ -168,7 +175,7 @@ public class GameScene {
         }
     }
 
-    public boolean isActiveGame() {
+    public Boolean isActiveGame() {
         return activeGame;
     }
 

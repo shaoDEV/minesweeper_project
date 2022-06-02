@@ -1,6 +1,7 @@
 package de.shao.gameRefactor;
 
 import de.shao.driver.PictureController;
+import de.shao.driver.SystemConstraints;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,16 +12,26 @@ public class GameBoard extends JPanel {
 
     private int panelWidth = 0;
     private int panelHeight = 0;
+    private int fieldSize = 0;
+    private int bombCount = 0;
     private PictureController pictureController = null;
-    private boolean activeGame = true;
+    private Boolean activeGame = null;
     private boolean gameWon = false;
+
+    private JFrame sirFrameALot = null;
+
+    Point initPoint = null;
 
     BackgroundScene backgroundScene = null;
     GameScene gameScene = null;
+    EndScene endScene = null;
 
-    public GameBoard(int width, int height, PictureController pictureController) {
+    public GameBoard(JFrame frame, int width, int height, PictureController pictureController, int bombCount, int fieldSize) {
+        sirFrameALot = frame;
         panelWidth = width;
         panelHeight = height;
+        this.bombCount = bombCount;
+        this.fieldSize = fieldSize;
 
         this.pictureController = pictureController;
 
@@ -39,30 +50,52 @@ public class GameBoard extends JPanel {
         });
     }
 
-    private void initialize(){
-        backgroundScene = new BackgroundScene(new Point(0,0), pictureController);
+    private void initialize() {
+        backgroundScene = new BackgroundScene(new Point(0, 0), pictureController, fieldSize);
+
+        switch (fieldSize) {
+            case 10 -> initPoint = SystemConstraints.TEN_TEN.point();
+            case 16 -> initPoint = SystemConstraints.SIXTEEN_SIXTEEN.point();
+            case 20 -> initPoint = SystemConstraints.TWENTY_TWENTY.point();
+        }
         gameScene = new GameScene(
-                new Point(66, 72),
-                new Point(pictureController.getSystemResources("background").getWidth(null), pictureController.getSystemResources("background").getHeight(null)),
-                10,
-                10,
+                initPoint,
+                new Point(pictureController.getSystemResources("background" + fieldSize).getWidth(null), pictureController.getSystemResources("background" + fieldSize).getHeight(null)),
+                fieldSize,
+                bombCount,
                 pictureController);
+
     }
 
-    private void getGameStatus(){
+    private void getGameStatus() {
         activeGame = gameScene.isActiveGame();
         gameWon = gameScene.isGameWon();
 
-        if (activeGame == false){
-            System.out.println("Spiel ist vorbei!");
-            if (gameWon) System.out.println("Spiel gewonnen!");
-            else System.out.println("Spiel verloren!");
+        if (activeGame != null && !activeGame) {
+            //Erstellung der Endscene mit der Berechnung wo genau sie gezeichnet werden soll.
+            int widthEndSceneItem = pictureController.getSystemResources("startNewGame").getWidth(null); //Breite der MenuObjekte in der Endscene zur Berechnung des Zeichenpunktes
+            int widthActiveGameArea = fieldSize * pictureController.getBomb().getWidth(null); //Breite des aktiven Spielfeldes. Wird benötigt um die Endscene in der Mitte des Spielfeldes zu zeichnen
+
+            if (gameWon) {
+
+            } else {
+                endScene = new EndScene(pictureController, new Point(initPoint.x + ((widthActiveGameArea / 2) - (widthEndSceneItem / 2)), 200)); //Erstellung der Endscene mit berechnetem Zeichenpunkt
+            }
         }
 
     }
 
-    private void boardInteraction(MouseEvent e){
-        if (activeGame) gameScene.sceneInteraction(e);
+    private void boardInteraction(MouseEvent e) {
+        if (activeGame == null || activeGame) gameScene.sceneInteraction(e);
+        else {
+            endScene.sceneInteraction(e);
+            if (endScene.isGoBackToMenu()) sirFrameALot.dispose();
+            if (endScene.isStartANewGame()) {
+                initialize();
+            }
+        }
+
+
     }
 
     @Override
@@ -72,5 +105,8 @@ public class GameBoard extends JPanel {
 
         backgroundScene.drawScene(g2d);
         gameScene.drawScene(g2d);
+        if (activeGame != null && !activeGame) {
+            endScene.drawScene(g2d);
+        }
     }
 }

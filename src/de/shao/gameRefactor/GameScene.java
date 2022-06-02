@@ -1,7 +1,6 @@
 package de.shao.gameRefactor;
 
 import de.shao.driver.PictureController;
-import de.shao.gameRefactor.Field;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -16,16 +15,21 @@ public class GameScene {
     private int bombCount = 0;
     private int flagsPlaced = 0;
 
+    private boolean activeGame = true;
+    private boolean gameWon = false;
+
     private Field[][] fieldMatrix;
     private Field[] allFields;
 
     private Point sceneCorner = null;
+    private Point bottomRightBackgroundCorner = null;
 
-    public GameScene(Point upperRightSceneCorner, int fieldSize, int bombCount, PictureController pictureController) {
+    public GameScene(Point upperLeftSceneCorner, Point bottomRightBackgroundCorner, int fieldSize, int bombCount, PictureController pictureController) {
         this.fieldSize = fieldSize;
         this.bombCount = bombCount;
         this.pictureController = pictureController;
-        sceneCorner = upperRightSceneCorner;
+        this.bottomRightBackgroundCorner = bottomRightBackgroundCorner;
+        sceneCorner = upperLeftSceneCorner;
         fieldMeasure = pictureController.getBomb().getHeight(null);
 
         fieldMatrix = new Field[fieldSize][fieldSize];
@@ -56,6 +60,9 @@ public class GameScene {
         for (Field field : allFields) {
             field.drawField(g2d);
         }
+        //Zeichne die visuelle Darstellung der noch über bleibenden Flaggen
+        g2d.setColor(Color.GREEN);
+        g2d.fillRect(bottomRightBackgroundCorner.x - 36, bottomRightBackgroundCorner.y - 468 + (flagsPlaced * 30), 18, 300 - (flagsPlaced * 30));
     }
 
     private void setRandomBombs() {
@@ -133,5 +140,39 @@ public class GameScene {
                 }
             }
         }
+        checkEndOfGame();
+    }
+
+    private void lostRound(){
+        for (Field field : allFields) if (field.getBottomPictureIdentifier() == 'b') field.setOpen(true);
+        activeGame = false;
+        gameWon = false;
+    }
+
+    private void wonRound(){
+        activeGame = false;
+        gameWon = true;
+    }
+
+    private void checkEndOfGame(){
+        int fieldsOpened = 0;
+        for (Field field : allFields) {
+            if (field.isOpen() && field.getBottomPictureIdentifier() == 'b'){
+                lostRound();
+            } else if (field.isOpen()){
+                fieldsOpened++;
+            }
+        }
+        if (fieldsOpened >= allFields.length - bombCount){
+            wonRound();
+        }
+    }
+
+    public boolean isActiveGame() {
+        return activeGame;
+    }
+
+    public boolean isGameWon() {
+        return gameWon;
     }
 }

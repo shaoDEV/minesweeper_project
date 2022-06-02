@@ -13,6 +13,7 @@ public class GameBoard extends JPanel {
     private int panelHeight = 0;
     private PictureController pictureController = null;
     private boolean activeGame = true;
+    private boolean gameWon = false;
 
     BackgroundScene backgroundScene = null;
     GameScene gameScene = null;
@@ -32,6 +33,7 @@ public class GameBoard extends JPanel {
             public void mousePressed(MouseEvent e) {
                 super.mousePressed(e);
                 boardInteraction(e);
+                getGameStatus();
                 repaint();
             }
         });
@@ -39,11 +41,24 @@ public class GameBoard extends JPanel {
 
     private void initialize(){
         backgroundScene = new BackgroundScene(new Point(0,0), pictureController);
-        gameScene = new GameScene(new Point(66, 72), 10, 10, pictureController);
+        gameScene = new GameScene(
+                new Point(66, 72),
+                new Point(pictureController.getSystemResources("background").getWidth(null), pictureController.getSystemResources("background").getHeight(null)),
+                10,
+                10,
+                pictureController);
     }
 
-    public void setActiveGame(boolean activeGame) {
-        this.activeGame = activeGame;
+    private void getGameStatus(){
+        activeGame = gameScene.isActiveGame();
+        gameWon = gameScene.isGameWon();
+
+        if (activeGame == false){
+            System.out.println("Spiel ist vorbei!");
+            if (gameWon) System.out.println("Spiel gewonnen!");
+            else System.out.println("Spiel verloren!");
+        }
+
     }
 
     private void boardInteraction(MouseEvent e){

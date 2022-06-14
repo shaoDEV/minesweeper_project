@@ -1,9 +1,7 @@
 package de.shao.gameRefactor;
 
 import de.shao.driver.PictureController;
-import de.shao.driver.SystemConstraints;
 
-import javax.imageio.stream.ImageOutputStreamImpl;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 

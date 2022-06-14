@@ -21,7 +21,7 @@ public enum Pictures {
     OPEN("images/FIELD_OPEN.png"),
     FLAG("images/BOX_BLOCKED.png"),
     BOMB("images/BOMB.png"),
-    CARROTCURSOR("images/CURSOR.png");
+    CARROTCURSOR("images/0/cursor.png");
 
     private final boolean DEBUG = true;
 

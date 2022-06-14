@@ -1,8 +1,6 @@
 package de.shao.driver;
 
 import java.awt.*;
-import java.util.HashMap;
-import java.util.Map;
 
 public enum SystemConstraints {
 

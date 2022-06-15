@@ -6,7 +6,7 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.Random;
 
-public class GameScene {
+public class  GameScene {
 
     PictureController pictureController = null;
 

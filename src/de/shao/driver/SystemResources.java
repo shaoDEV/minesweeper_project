@@ -37,6 +37,10 @@ public class SystemResources {
                 imageMap.put("safebar_2", masterImage);
                 masterImage = ImageIO.read(new File("resources/images/system/menu/safebar_3.png"));
                 imageMap.put("safebar_3", masterImage);
+                masterImage = ImageIO.read(new File("resources/images/system/menu/gamestart_fade.png"));
+                imageMap.put("gamestart_fade", masterImage);
+                masterImage = ImageIO.read(new File("resources/images/system/menu/mainframe_profiles.png"));
+                imageMap.put("mainframe_profiles", masterImage);
             } else {
                 masterImage = ImageIO.read(getClass().getResource("/images/system/error.png"));
                 imageMap.put("mainframe", masterImage);

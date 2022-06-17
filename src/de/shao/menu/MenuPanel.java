@@ -47,10 +47,6 @@ public class MenuPanel extends JPanel {
     private void init(){
         systemResources = SystemResources.getInstance();
         sceneStack.add(new StartScene(systemResources));
-        sceneStack.add(new StartFadeOutScene(systemResources));
-        sceneStack.add(new ProfilFadeScene(true, systemResources));
-        sceneStack.add(new ProfilScene(systemResources));
-
         cycleStart();
     }
 
@@ -76,7 +72,11 @@ public class MenuPanel extends JPanel {
         g2d.clearRect(0,0,MENU_WIDTH, MENU_HEIGHT);
         g2d.drawImage(systemResources.getSystemImage("mainframe"),0,i,null);
         if (!sceneStack.isEmpty()){
-            if (!sceneStack.peek().drawScene(g2d)) sceneStack.remove();
+            if(!sceneStack.peek().drawScene(g2d)){
+                sceneStack.add(sceneStack.peek().getFollowUpScene());
+                sceneStack.remove();
+            }
+
         }
     }
 

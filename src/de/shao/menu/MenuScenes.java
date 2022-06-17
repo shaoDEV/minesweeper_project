@@ -13,4 +13,6 @@ public abstract class MenuScenes {
     abstract boolean drawScene(Graphics2D graphics2D);
 
     abstract void mouseInteraction(MouseEvent mouseEvent);
+
+    abstract MenuScenes getFollowUpScene();
 }

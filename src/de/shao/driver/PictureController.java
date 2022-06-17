@@ -1,5 +1,7 @@
 package de.shao.driver;
 
+import resources.ResHelper;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -107,12 +109,7 @@ public class PictureController {
     private void loadMissingImage(){
         BufferedImage image;
         try {
-            if (DEBUG) {
-                image = ImageIO.read(new File("resources/images/system/error.png"));
-
-            } else {
-                image = ImageIO.read(getClass().getResource("/images/system/error.png"));
-            }
+            image = ImageIO.read(ResHelper.getResourcenStream("images/system/error.png"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -122,11 +119,7 @@ public class PictureController {
     private void loadFlag() {
         BufferedImage image;
         try {
-            if (DEBUG) {
-                image = ImageIO.read(new File("resources/images/" + flag + "/flag.png"));
-            } else {
-                image = ImageIO.read(getClass().getResource("/images/" + flag + "/flag.png"));
-            }
+            image = ImageIO.read(ResHelper.getResourcenStream("images/" + flag + "/flag.png"));
         } catch (IOException e) {
             scaledFlagImage = missingImage;
             throw new RuntimeException(e);
@@ -138,12 +131,7 @@ public class PictureController {
     private void loadCursor() {
         BufferedImage image;
         try {
-            if (DEBUG) {
-                image = ImageIO.read(new File("resources/images/" + cursor + "/cursor.png"));
-
-            } else {
-                image = ImageIO.read(getClass().getResource("/images/" + cursor + "/cursor.png"));
-            }
+            image = ImageIO.read(ResHelper.getResourcenStream("images/" + cursor + "/cursor.png"));
         } catch (IOException e) {
             cursorImage = missingImage;
             throw new RuntimeException(e);
@@ -155,18 +143,10 @@ public class PictureController {
     private void loadBlocks() {
         BufferedImage image;
         try {
-            if (DEBUG) {
-                image = ImageIO.read(new File("resources/images/" + blocks + "/block_closed.png"));
-                scaledBlockImages.add(scaleImage(image));
-                image = ImageIO.read(new File("resources/images/" + blocks + "/block_open.png"));
-                scaledBlockImages.add(scaleImage(image));
-
-            } else {
-                image = ImageIO.read(getClass().getResource("/images/" + blocks + "/block_closed.png"));
-                scaledBlockImages.add(scaleImage(image));
-                image = ImageIO.read(getClass().getResource("/images/" + blocks + "/block_open.png"));
-                scaledBlockImages.add(scaleImage(image));
-            }
+            image = ImageIO.read(ResHelper.getResourcenStream("images/" + flag + "/block_closed.png"));
+            scaledBlockImages.add(scaleImage(image));
+            image = ImageIO.read(ResHelper.getResourcenStream("images/" + flag + "/block_open.png"));
+            scaledBlockImages.add(scaleImage(image));
         } catch (IOException e) {
             scaledBlockImages.add(missingImage);
             scaledBlockImages.add(missingImage);
@@ -178,13 +158,8 @@ public class PictureController {
         BufferedImage image;
         for (int identifier = 1; identifier < 8; identifier++){
             try {
-                if (DEBUG) {
-                    image = ImageIO.read(new File("resources/images/" + numbers + "/" + identifier + ".png"));
-                    scaledNumberImages.add(scaleImage(image));
-                }else {
-                    image = ImageIO.read(getClass().getResource("/images/" + numbers + "/" + identifier + ".png"));
-                    scaledBlockImages.add(scaleImage(image));
-                }
+                image = ImageIO.read(ResHelper.getResourcenStream("images/" + numbers + "/" + identifier + ".png"));
+                scaledNumberImages.add(scaleImage(image));
             } catch (IOException e) {
                 scaledBlockImages.add(missingImage);
                 e.printStackTrace();
@@ -195,12 +170,7 @@ public class PictureController {
     private void loadBomb(){
         BufferedImage image;
         try {
-            if (DEBUG) {
-                image = ImageIO.read(new File("resources/images/" + bomb + "/bomb.png"));
-
-            } else {
-                image = ImageIO.read(getClass().getResource("/images/" + bomb + "/bomb.png"));
-            }
+            image = ImageIO.read(ResHelper.getResourcenStream("images/" + bomb + "/bomb.png"));
         } catch (IOException e) {
             scaledBombImage = missingImage;
             throw new RuntimeException(e);
@@ -211,25 +181,14 @@ public class PictureController {
     private void loadSystemResources(){
         BufferedImage image;
         try {
-            if (DEBUG) {
-                image = ImageIO.read(new File("resources/images/system/backToMenu.png"));
-                systemResources.put("backToMenu", image);
-                image = ImageIO.read(new File("resources/images/system/startNewGame.png"));
-                systemResources.put("startNewGame", image);
-                image = ImageIO.read(new File("resources/images/system/10x10.png"));
-                systemResources.put("background10", image);
-                image = ImageIO.read(new File("resources/images/system/16x16.png"));
-                systemResources.put("background16", image);
-            }else{
-                image = ImageIO.read(getClass().getResource("resources/images/system/backToMenu.png"));
-                systemResources.put("backToMenu", image);
-                image = ImageIO.read(getClass().getResource("resources/images/system/startNewGame.png"));
-                systemResources.put("startNewGame", image);
-                image = ImageIO.read(getClass().getResource("resources/images/system/10x10.png"));
-                systemResources.put("background10", image);
-                image = ImageIO.read(getClass().getResource("resources/images/system/16x16.png"));
-                systemResources.put("background16", image);
-            }
+            image = ImageIO.read(ResHelper.getResourcenStream("images/system/ingame/backToMenu.png"));
+            systemResources.put("backToMenu", image);
+            image = ImageIO.read(ResHelper.getResourcenStream("images/system/ingame/startNewGame.png"));
+            systemResources.put("startNewGame", image);
+            image = ImageIO.read(ResHelper.getResourcenStream("images/system/ingame/10x10.png"));
+            systemResources.put("background10", image);
+            image = ImageIO.read(ResHelper.getResourcenStream("images/system/ingame/16x16.png"));
+            systemResources.put("background16", image);
         } catch (IOException e) {
             e.printStackTrace();
         }

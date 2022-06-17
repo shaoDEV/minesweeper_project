@@ -17,17 +17,16 @@ public class GameFrame extends JFrame {
 
         this.pictureController = pictureController;
 
-        initialize();
-    }
-
-    private void initialize(){
+        add(new GameBoard(this, frameWidth, frameHeight, pictureController, 10, 10));
         setSize(new Dimension(frameWidth,frameHeight));
         setUndecorated(true);
         setLocationRelativeTo(null);
         setBackground(new Color(1.0f, 1.0f, 1.0f, 0.0f));
         setVisible(true);
+    }
 
-        add(new GameBoard(this, frameWidth, frameHeight, pictureController, 20, 16));
+    private void initialize(){
+
     }
 
 }

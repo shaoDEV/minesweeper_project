@@ -10,6 +10,8 @@ public class StartScene extends MenuScenes {
     SystemResources systemResources;
 
     Rectangle startButtonArea = new Rectangle(300, 351, 675, 198);
+    boolean startAnimation = false;
+    int yPosition = 351;
 
     public StartScene(SystemResources systemResources) {
         this.systemResources = systemResources;
@@ -17,14 +19,24 @@ public class StartScene extends MenuScenes {
 
     @Override
     boolean drawScene(Graphics2D graphics2D) {
-        graphics2D.drawImage(systemResources.getSystemImage("gamestart"), 300, 351, null);
+        if (!startAnimation) graphics2D.drawImage(systemResources.getSystemImage("gamestart"), 300, 351, null);
+        else {
+            yPosition -= 12;
+            graphics2D.drawImage(systemResources.getSystemImage("gamestart_fade"),300,yPosition,null);
+            if (yPosition <= -454) isSceneActive = false;
+        }
         return isSceneActive;
     }
 
     @Override
     void mouseInteraction(MouseEvent mouseEvent) {
         if (startButtonArea.contains(mouseEvent.getPoint())) {
-            isSceneActive = false;
+            startAnimation = true;
         }
+    }
+
+    @Override
+    MenuScenes getFollowUpScene() {
+        return new ProfilFadeScene(systemResources);
     }
 }

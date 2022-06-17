@@ -38,7 +38,7 @@ public class GameMenuPanel extends JPanel {
         Graphics2D g2d = (Graphics2D) g;
         BufferedImage image;
         try {
-            image = ImageIO.read(new File("resources/images/system/backToMenu.png"));
+            image = ImageIO.read(new File("resources/images/system/ingame/backToMenu.png"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

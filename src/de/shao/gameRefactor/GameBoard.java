@@ -64,7 +64,6 @@ public class GameBoard extends JPanel {
                 fieldSize,
                 bombCount,
                 pictureController);
-
     }
 
     private void getGameStatus() {
@@ -75,11 +74,11 @@ public class GameBoard extends JPanel {
             //Erstellung der Endscene mit der Berechnung wo genau sie gezeichnet werden soll.
             int widthEndSceneItem = pictureController.getSystemResources("startNewGame").getWidth(null); //Breite der MenuObjekte in der Endscene zur Berechnung des Zeichenpunktes
             int widthActiveGameArea = fieldSize * pictureController.getBomb().getWidth(null); //Breite des aktiven Spielfeldes. Wird benötigt um die Endscene in der Mitte des Spielfeldes zu zeichnen
-
+            endScene = new EndScene(pictureController, new Point(initPoint.x + ((widthActiveGameArea / 2) - (widthEndSceneItem / 2)), 200)); //Erstellung der Endscene mit berechnetem Zeichenpunkt
             if (gameWon) {
 
             } else {
-                endScene = new EndScene(pictureController, new Point(initPoint.x + ((widthActiveGameArea / 2) - (widthEndSceneItem / 2)), 200)); //Erstellung der Endscene mit berechnetem Zeichenpunkt
+                //endScene = new EndScene(pictureController, new Point(initPoint.x + ((widthActiveGameArea / 2) - (widthEndSceneItem / 2)), 200)); //Erstellung der Endscene mit berechnetem Zeichenpunkt
             }
         }
 

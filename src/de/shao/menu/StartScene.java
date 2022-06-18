@@ -37,6 +37,6 @@ public class StartScene extends MenuScenes {
 
     @Override
     MenuScenes getFollowUpScene() {
-        return new ProfilFadeScene(systemResources);
+        return new ProfilScene(systemResources);
     }
 }

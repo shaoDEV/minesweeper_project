@@ -17,14 +17,14 @@ public class MenuPanel extends JPanel {
 
     private Timer menuTimer;
 
-    int i = 0;
-
     private final int MENU_WIDTH = 1275;
     private final int MENU_HEIGHT = 900;
 
     SystemResources systemResources = null;
 
     Queue<MenuScenes> sceneStack = null;
+
+    private Rectangle closeButton;
 
     public MenuPanel(JFrame masterFrame){
         this.masterFrame = masterFrame;
@@ -40,6 +40,8 @@ public class MenuPanel extends JPanel {
                 mouseInteraction(e);
             }
         });
+
+        closeButton = new Rectangle(1223,0,52,52);
 
         init();
     }
@@ -61,6 +63,7 @@ public class MenuPanel extends JPanel {
     }
 
     private void mouseInteraction(MouseEvent mouseEvent){
+        if (closeButton.contains(mouseEvent.getPoint())) System.exit(0);
         if (!sceneStack.isEmpty()) sceneStack.peek().mouseInteraction(mouseEvent);
     }
 
@@ -70,7 +73,8 @@ public class MenuPanel extends JPanel {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setBackground((new Color(1.0f, 1.0f, 1.0f, 0.0f)));
         g2d.clearRect(0,0,MENU_WIDTH, MENU_HEIGHT);
-        g2d.drawImage(systemResources.getSystemImage("mainframe"),0,i,null);
+        g2d.drawImage(systemResources.getSystemImage("mainframe"),0,0,null);
+        g2d.drawImage(systemResources.getSystemImage("close"),1223,0, null);
         if (!sceneStack.isEmpty()){
             if(!sceneStack.peek().drawScene(g2d)){
                 sceneStack.add(sceneStack.peek().getFollowUpScene());

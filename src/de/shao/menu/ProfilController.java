@@ -56,23 +56,28 @@ public class ProfilController {
                     ObjectInputStream profil_3_objectStream = new ObjectInputStream(profil_3_bufferedStream);
 
             ) {
-                firstProfil = (Profil) profil_3_objectStream.readObject();
+                thirdProfil = (Profil) profil_3_objectStream.readObject();
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    public void createProfil(String name, int profilID) {
+    public void createProfil(String name, int profilIconID, int profilID) {
         try (
                 FileOutputStream fileOut = new FileOutputStream(SPIELER_SPEICHER_PFAD + "profil_" + profilID + ".bin");
                 BufferedOutputStream bufferedOut = new BufferedOutputStream(fileOut);
                 ObjectOutputStream objectOut = new ObjectOutputStream(bufferedOut);
         ) {
-            Profil newCreatedProfil = new Profil(name);
+            Profil newCreatedProfil = new Profil(name, profilIconID);
             objectOut.writeObject(newCreatedProfil);
         } catch (IOException e) {
         }
+    }
+
+    public void deleteProfil(int profilID){
+        File file = new File(SPIELER_SPEICHER_PFAD + "profil_" + profilID + ".bin");
+        file.delete();
     }
 
     public Profil getProfilByID(int profilID){

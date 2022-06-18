@@ -39,6 +39,18 @@ public class SystemResources {
             imageMap.put("safebar_3", masterImage);
             masterImage = ImageIO.read(ResHelper.getResourcenStream("images/system/menu/gamestart_fade.png"));
             imageMap.put("gamestart_fade", masterImage);
+            masterImage = ImageIO.read(ResHelper.getResourcenStream("images/system/menu/profilIcon_1.png"));
+            imageMap.put("profilIcon_1", masterImage);
+            masterImage = ImageIO.read(ResHelper.getResourcenStream("images/system/menu/profilIcon_2.png"));
+            imageMap.put("profilIcon_2", masterImage);
+            masterImage = ImageIO.read(ResHelper.getResourcenStream("images/system/menu/profilIcon_3.png"));
+            imageMap.put("profilIcon_3", masterImage);
+            masterImage = ImageIO.read(ResHelper.getResourcenStream("images/system/menu/neuesProfil.png"));
+            imageMap.put("neuesProfil", masterImage);
+            masterImage = ImageIO.read(ResHelper.getResourcenStream("images/system/menu/deleteProfil.png"));
+            imageMap.put("deleteProfil", masterImage);
+            masterImage = ImageIO.read(ResHelper.getResourcenStream("images/system/menu/close.png"));
+            imageMap.put("close", masterImage);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

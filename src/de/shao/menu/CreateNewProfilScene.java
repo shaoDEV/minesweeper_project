@@ -3,11 +3,14 @@ package de.shao.menu;
 import de.shao.driver.SystemResources;
 
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 
 public class CreateNewProfilScene {
 
-    private final int ICON_COUNT = 3;
+    private final int ICON_COUNT = 4;
 
     private int position = 0;
     private boolean fadeIn = true;
@@ -19,6 +22,7 @@ public class CreateNewProfilScene {
     int selectedProfilID;
 
     private int iconID;
+    private String name = "";
 
     private Rectangle iconInteractionRectangle;
     private Rectangle createProfileInteractionRectangle;
@@ -35,16 +39,16 @@ public class CreateNewProfilScene {
     }
 
     public boolean drawScene(Graphics2D graphics2D) {
-        if (fadeIn){
+        if (fadeIn) {
             if (position > 323) position -= 10;
             else {
                 position = 323;
                 animationComplete = true;
             }
         }
-        if (!fadeIn){
+        if (!fadeIn) {
             if (position < 1200) position += 10;
-            else{
+            else {
                 profilCreationDone = true;
             }
         }
@@ -52,7 +56,9 @@ public class CreateNewProfilScene {
         graphics2D.drawImage(systemResources.getSystemImage("neuesProfil"), 373, position, null);
         if (animationComplete) {
             graphics2D.drawImage(systemResources.getSystemImage("profilIcon_" + iconID), 429, 387, null);
-
+            graphics2D.setColor(new Color(58, 254, 245));
+            graphics2D.setFont(new Font("Minecraft", Font.PLAIN, 30));
+            graphics2D.drawString(name, 596,469);
         }
 
         return profilCreationDone;
@@ -61,13 +67,24 @@ public class CreateNewProfilScene {
     public void mouseInteraction(MouseEvent mouseEvent) {
         if (animationComplete) {
             if (iconInteractionRectangle.contains(mouseEvent.getPoint())) {
-                if (iconID < ICON_COUNT) iconID = iconID+1;
+                if (iconID < ICON_COUNT) iconID = iconID + 1;
                 else iconID = 0;
             }
             if (createProfileInteractionRectangle.contains(mouseEvent.getPoint())) {
-                profilController.createProfil("Test", iconID, selectedProfilID);
+                profilController.createProfil( name, iconID, selectedProfilID);
                 fadeIn = false;
                 animationComplete = false;
+            }
+        }
+    }
+
+    public void keyInteraction(KeyEvent keyEvent) {
+        if (animationComplete) {
+            if (keyEvent.getKeyCode() >= 65 && keyEvent.getKeyCode() <= 90) name = name + keyEvent.getKeyChar();
+            if (keyEvent.getKeyChar() == 8 && name.length() > 0){
+                StringBuilder stringBuilder = new StringBuilder(name);
+                stringBuilder.deleteCharAt(name.length() -1);
+                name = stringBuilder.toString();
             }
         }
     }

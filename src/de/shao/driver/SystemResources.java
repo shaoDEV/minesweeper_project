@@ -13,6 +13,10 @@ public class SystemResources {
     private final boolean DEBUG = true;
     private static SystemResources systemResourcese = null;
 
+    //Pasta Code
+    public static Point FramePoint = null;
+    //Pasta Code Ende
+
     Map<String, Image> imageMap = new HashMap<>();
 
     public static SystemResources getInstance() {
@@ -51,6 +55,21 @@ public class SystemResources {
             imageMap.put("deleteProfil", masterImage);
             masterImage = ImageIO.read(ResHelper.getResourcenStream("images/system/menu/close.png"));
             imageMap.put("close", masterImage);
+            masterImage = ImageIO.read(ResHelper.getResourcenStream("images/system/menu/profilIcon_4.png"));
+            imageMap.put("profilIcon_4", masterImage);
+            masterImage = ImageIO.read(ResHelper.getResourcenStream("images/system/menu/arrowLeft.png"));
+            imageMap.put("arrowLeft", masterImage);
+            masterImage = ImageIO.read(ResHelper.getResourcenStream("images/system/menu/arrowRight.png"));
+            imageMap.put("arrowRight", masterImage);
+            masterImage = ImageIO.read(ResHelper.getResourcenStream("images/system/menu/button.png"));
+            imageMap.put("button", masterImage);
+            masterImage = ImageIO.read(ResHelper.getResourcenStream("images/system/menu/customButton.png"));
+            imageMap.put("customButton", masterImage);
+            masterImage = ImageIO.read(ResHelper.getResourcenStream("images/system/menu/customButtonHover.png"));
+            imageMap.put("customButtonHover", masterImage);
+            masterImage = ImageIO.read(ResHelper.getResourcenStream("images/system/menu/buttonHover.png"));
+            imageMap.put("buttonHover", masterImage);
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

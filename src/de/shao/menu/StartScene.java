@@ -3,6 +3,7 @@ package de.shao.menu;
 import de.shao.driver.SystemResources;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
 public class StartScene extends MenuScenes {
@@ -33,6 +34,12 @@ public class StartScene extends MenuScenes {
         if (startButtonArea.contains(mouseEvent.getPoint())) {
             startAnimation = true;
         }
+    }
+
+
+    @Override
+    void keyInteraction(KeyEvent keyEvent) {
+
     }
 
     @Override

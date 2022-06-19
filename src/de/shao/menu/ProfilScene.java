@@ -3,6 +3,7 @@ package de.shao.menu;
 import de.shao.driver.SystemResources;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
 public class ProfilScene extends MenuScenes {
@@ -72,7 +73,7 @@ public class ProfilScene extends MenuScenes {
                             return;
                         }
                         selectedProfilID = 1;
-                        fadeComplete = false;
+                        fadeComplete = true;
                         fadeIn = false;
                     } else {
                         createNewProfilScene = new CreateNewProfilScene(systemResources, profilController, 1);
@@ -87,7 +88,7 @@ public class ProfilScene extends MenuScenes {
                             return;
                         }
                         selectedProfilID = 2;
-                        fadeComplete = false;
+                        fadeComplete = true;
                         fadeIn = false;
                     } else {
                         createNewProfilScene = new CreateNewProfilScene(systemResources, profilController, 2);
@@ -102,7 +103,7 @@ public class ProfilScene extends MenuScenes {
                             return;
                         }
                         selectedProfilID = 3;
-                        fadeComplete = false;
+                        fadeComplete = true;
                         fadeIn = false;
                     } else {
                         createNewProfilScene = new CreateNewProfilScene(systemResources, profilController, 3);
@@ -114,6 +115,11 @@ public class ProfilScene extends MenuScenes {
             createNewProfilScene.mouseInteraction(mouseEvent);
         }
 
+    }
+
+
+    public void keyInteraction(KeyEvent keyEvent){
+        if (createNewProfilScene != null) createNewProfilScene.keyInteraction(keyEvent);
     }
 
     @Override
@@ -171,13 +177,13 @@ public class ProfilScene extends MenuScenes {
             }
             //Profil 3
             if (profilController.getProfilByID(3) != null) {
-                graphics2D.drawRect(941, 293, 129, 280);
+                graphics2D.drawRect(941, 293, 129, 129);
                 Profil tempProfil = profilController.getProfilByID(3);
                 graphics2D.drawImage(systemResources.getSystemImage("profilIcon_" + tempProfil.getIconID()), 942, 294, null);
                 graphics2D.drawString("Profil 3", 943, 273);
                 graphics2D.drawString(tempProfil.getName(), 940, 450);
                 graphics2D.drawString("Skins: " + tempProfil.getSkinsUnlocked() + " / " + SKIN_COUNT, 940, 500);
-                graphics2D.drawString("" + tempProfil.getAquiredPercentage() + "%", 940, 540);
+                graphics2D.drawString("Erfolge: " + tempProfil.getAquiredPercentage() + "%", 940, 540);
                 graphics2D.drawImage(systemResources.getSystemImage("deleteProfil"), 954, 722, null);
                 if (deleteThirdProfile == null) deleteThirdProfile = new Rectangle(954,722,164,20);
             } else {
@@ -195,7 +201,8 @@ public class ProfilScene extends MenuScenes {
 
         if (createProfileInteraction) drawCreateNewProfile(graphics2D);
 
-        if (!fadeIn && fadeComplete) isSceneActive = false;
+        //if (!fadeIn && fadeComplete) isSceneActive = false;
+        if (fadeComplete && selectedProfilID != 0) isSceneActive = false;
         return isSceneActive;
     }
 
@@ -233,36 +240,37 @@ public class ProfilScene extends MenuScenes {
     }
 
     private void fadeOut(Graphics2D graphics2D) {
-        //FadeOut nach links
-        if (firstY == 722) {
-            if (secondX <= 95) {
-                if (firstX > -345) firstX -= STEPSPEED;
-                else firstX = -345;
-            }
-
-            if (thirdX <= 465) {
-                if (secondX > -345) secondX -= STEPSPEED;
-                else secondX = -345;
-            }
-
-            if (thirdX > -345) thirdX -= STEPSPEED;
-            else thirdX = -345;
-        }
-
-
-        //FadeDown der Felder
-        if (firstY < 722) firstY += STEPSPEED;
-        else firstY = 722;
-
-        if (secondY < 722) secondY += STEPSPEED;
-        else secondY = 722;
-
-        if (thirdY < 722) thirdY += STEPSPEED;
-        else thirdY = 722;
-
-        if (firstY < 722) {
-            drawractangles(graphics2D);
-        }
+        //FadeComplete in MouseInteraction umstellen bei wiederaufnahme
+//        //FadeOut nach links
+//        if (firstY == 722) {
+//            if (secondX <= 95) {
+//                if (firstX > -345) firstX -= STEPSPEED;
+//                else firstX = -345;
+//            }
+//
+//            if (thirdX <= 465) {
+//                if (secondX > -345) secondX -= STEPSPEED;
+//                else secondX = -345;
+//            }
+//
+//            if (thirdX > -345) thirdX -= STEPSPEED;
+//            else thirdX = -345;
+//        }
+//
+//
+//        //FadeDown der Felder
+//        if (firstY < 722) firstY += STEPSPEED;
+//        else firstY = 722;
+//
+//        if (secondY < 722) secondY += STEPSPEED;
+//        else secondY = 722;
+//
+//        if (thirdY < 722) thirdY += STEPSPEED;
+//        else thirdY = 722;
+//
+//        if (firstY < 722) {
+//            drawractangles(graphics2D);
+//        }
     }
 
     private void drawractangles(Graphics2D graphics2D) {
@@ -278,6 +286,6 @@ public class ProfilScene extends MenuScenes {
     }
 
     public MenuScenes getFollowUpScene() {
-        return new MainMenuScene(selectedProfilID);
+        return new MainMenuScene(selectedProfilID,systemResources);
     }
 }

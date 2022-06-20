@@ -2,15 +2,21 @@ package de.shao.gameRefactor;
 
 import de.shao.driver.PictureController;
 import de.shao.driver.SystemConstraints;
+import de.shao.driver.SystemResources;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.*;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class GameBoard extends JPanel {
+
+    private final String DB_URL = "jdbc:mysql://217.160.175.168:3306/minesweeperHS";
+    private final String USER = "minesweeperMarvin";
+    private final String PASS = "password";
 
     private int panelWidth = 0;
     private int panelHeight = 0;
@@ -86,14 +92,26 @@ public class GameBoard extends JPanel {
             int widthEndSceneItem = pictureController.getSystemResources("startNewGame").getWidth(null); //Breite der MenuObjekte in der Endscene zur Berechnung des Zeichenpunktes
             int widthActiveGameArea = fieldSize * pictureController.getBomb().getWidth(null); //Breite des aktiven Spielfeldes. Wird benötigt um die Endscene in der Mitte des Spielfeldes zu zeichnen
             endScene = new EndScene(pictureController, new Point(initPoint.x + ((widthActiveGameArea / 2) - (widthEndSceneItem / 2)), 200)); //Erstellung der Endscene mit berechnetem Zeichenpunkt
+            String sql = "";
+            if (fieldSize == 10)
+                sql = "INSERT INTO `tenFieldHighscore`(`userID`, `username`, `secToFinish`) VALUES ('" + SystemResources.actualID + "','" + SystemResources.actualUsername + "','999')";
+            if (fieldSize == 16)
+                sql = "INSERT INTO `sixtenFieldHighscore`(`userID`, `username`, `secToFinish`) VALUES ('" + SystemResources.actualID + "','" + SystemResources.actualUsername + "','999')";
+            if (fieldSize == 25)
+                sql = "INSERT INTO `twentyFiveFieldHighscore`(`userID`, `username`, `secToFinish`) VALUES ('" + SystemResources.actualID + "','" + SystemResources.actualUsername + "','999')";
             if (gameWon) {
-
-            } else {
-                //endScene = new EndScene(pictureController, new Point(initPoint.x + ((widthActiveGameArea / 2) - (widthEndSceneItem / 2)), 200)); //Erstellung der Endscene mit berechnetem Zeichenpunkt
+                try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS)) {
+                    Statement stmt = conn.createStatement();
+                    stmt.executeUpdate(sql);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
+        } else {
+            //endScene = new EndScene(pictureController, new Point(initPoint.x + ((widthActiveGameArea / 2) - (widthEndSceneItem / 2)), 200)); //Erstellung der Endscene mit berechnetem Zeichenpunkt
         }
-
     }
+
 
     private void boardInteraction(MouseEvent e) {
         if (activeGame == null || activeGame) gameScene.sceneInteraction(e);

@@ -17,6 +17,8 @@ public class SystemResources {
     public static Point FramePoint = null;
     public static Point GameFramePoint = null;
     public static boolean isGameActive = false;
+    public static int actualID = 0;
+    public static String actualUsername = "";
     //Pasta Code Ende
 
     Map<String, Image> imageMap = new HashMap<>();

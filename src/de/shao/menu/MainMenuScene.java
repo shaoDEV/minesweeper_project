@@ -1,6 +1,8 @@
 package de.shao.menu;
 
+import de.shao.driver.PictureController;
 import de.shao.driver.SystemResources;
+import de.shao.gameRefactor.GameFrame;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -9,15 +11,19 @@ import java.awt.event.MouseEvent;
 public class MainMenuScene extends MenuScenes {
 
     private int profilID;
+    private int selectedSkinID = 1;
+    private final int SKINCOUNT = 3;
+    private String customBombCount = "";
+    private int customBombCountNummeric = 0;
 
     private SystemResources systemResources;
     private ProfilController profilController;
+    private MenuScenes followUpScene;
 
     private Rectangle customGame10, customGame16, customGame25;
-    private boolean customGame10Hovered, customGame16Hovered, customGame25Hovered;
     private Rectangle skinSelectorRight, skinSelectorLeft;
     private Rectangle classicGame10, classicGame16, classicGame25;
-    private boolean classicGame10Hovered, classicGame16Hovered, classicGame25Hovered;
+    private Rectangle backToProfile;
 
     public MainMenuScene(int profilID, SystemResources systemResources) {
         this.profilID = profilID;
@@ -29,8 +35,8 @@ public class MainMenuScene extends MenuScenes {
 
     private void initAreas() {
         //SkinSelectors
-        skinSelectorLeft = new Rectangle(240, 255, 32, 32);
-        skinSelectorRight = new Rectangle(466, 255, 32, 32);
+        skinSelectorLeft = new Rectangle(244, 255, 28, 32);
+        skinSelectorRight = new Rectangle(466, 255, 28, 32);
 
         //CustomGame
         customGame10 = new Rectangle(766, 662, 345, 50);
@@ -41,6 +47,9 @@ public class MainMenuScene extends MenuScenes {
         classicGame10 = new Rectangle(91, 345, 337, 99);
         classicGame16 = new Rectangle(457, 345, 337, 99);
         classicGame25 = new Rectangle(824, 345, 337, 99);
+
+        //Back to Profile
+        backToProfile = new Rectangle(1059,126,145,41);
     }
 
     @Override
@@ -92,12 +101,16 @@ public class MainMenuScene extends MenuScenes {
         if (classicGame10.contains(mouseEvent)) {
             graphics2D.drawImage(systemResources.getSystemImage("buttonHover"), 91, 345, null);
         } else graphics2D.drawImage(systemResources.getSystemImage("button"), 91, 345, null);
+        graphics2D.setFont(new Font("Minecraft", Font.PLAIN, 26));
+        graphics2D.drawString("Einfach - 10x10", 155, 402);
         if (classicGame16.contains(mouseEvent)) {
             graphics2D.drawImage(systemResources.getSystemImage("buttonHover"), 457, 345, null);
         } else graphics2D.drawImage(systemResources.getSystemImage("button"), 457, 345, null);
+        graphics2D.drawString("Mittel - 16x16", 540, 402);
         if (classicGame25.contains(mouseEvent)) {
             graphics2D.drawImage(systemResources.getSystemImage("buttonHover"), 824, 345, null);
         } else graphics2D.drawImage(systemResources.getSystemImage("button"), 824, 345, null);
+        graphics2D.drawString("Schwer - 25x25", 890, 402);
         //endregion
 
         //region newGameCustom
@@ -127,19 +140,97 @@ public class MainMenuScene extends MenuScenes {
         graphics2D.fillRect(1072, 567, 71, 46);
         //endregion
 
+        //region Skinselector
+        //Selector
+        if (skinSelectorLeft.contains(mouseEvent)) graphics2D.drawImage(systemResources.getSystemImage("arrowLeftHover"),244,255,null);
+        else graphics2D.drawImage(systemResources.getSystemImage("arrowLeft"),244,255,null);
+        if (skinSelectorRight.contains(mouseEvent)) graphics2D.drawImage(systemResources.getSystemImage("arrowRightHover"),466,255,null);
+        else graphics2D.drawImage(systemResources.getSystemImage("arrowRight"),466,255,null);
+        graphics2D.setFont(new Font("Minecraft", Font.PLAIN, 30));
+        graphics2D.drawString("Skin:", 327, 250);
+        graphics2D.drawString(skinSetName(selectedSkinID), 288,283);
+        //endregion
+
+        //Back To Profile
+        if (backToProfile.contains(mouseEvent)) graphics2D.drawImage(systemResources.getSystemImage("backToProfileHover"), 1059, 126, null);
+        else graphics2D.drawImage(systemResources.getSystemImage("backToProfile"), 1059, 126, null);
+
         return isSceneActive;
+    }
+
+    private String skinSetName(int skinSetID){
+        switch (skinSetID){
+            case 0 -> {return "Classic";}
+            case 1 -> {return "Weltraum";}
+            case 2 -> {return "Antike";}
+        }
+        return "Fehler";
     }
 
     @Override
     void mouseInteraction(MouseEvent mouseEvent) {
+        if (skinSelectorRight.contains(mouseEvent.getPoint())){
+            if (selectedSkinID < SKINCOUNT - 1) selectedSkinID += 1;
+            else selectedSkinID = 0;
+        }
+        if (skinSelectorLeft.contains(mouseEvent.getPoint())){
+            if (selectedSkinID > 0) selectedSkinID -= 1;
+            else selectedSkinID = SKINCOUNT -1;
+        }
+        if (classicGame10.contains(mouseEvent.getPoint())){
+            if (SystemResources.isGameActive == false){
+                SystemResources.isGameActive = true;
+                new GameFrame(systemResources.getFieldWidthBySize(10),
+                        systemResources.getFieldHeightBySize(10),
+                        PictureController.getPictureController(selectedSkinID,48),
+                        10,
+                        10);
+            }
+
+        }
+        if (classicGame16.contains(mouseEvent.getPoint())){
+            if (SystemResources.isGameActive == false){
+                SystemResources.isGameActive = true;
+                new GameFrame(systemResources.getFieldWidthBySize(16),
+                        systemResources.getFieldHeightBySize(16),
+                        PictureController.getPictureController(selectedSkinID,48),
+                        40,
+                        16);
+            }
+
+        }
+        if (classicGame25.contains(mouseEvent.getPoint())){
+            if (SystemResources.isGameActive == false){
+                SystemResources.isGameActive = true;
+                new GameFrame(systemResources.getFieldWidthBySize(25),
+                        systemResources.getFieldHeightBySize(25),
+                        PictureController.getPictureController(selectedSkinID,48),
+                        150,
+                        25);
+            }
+
+        }
+        if (backToProfile.contains(mouseEvent.getPoint())){
+            followUpScene = new ProfilScene(systemResources);
+            isSceneActive = false;
+        }
     }
 
     @Override
     void keyInteraction(KeyEvent keyEvent) {
+        if (keyEvent.getKeyCode() >= 48 && keyEvent.getKeyCode() <= 57) customBombCount += keyEvent.getKeyChar();
+        if (keyEvent.getKeyChar() == 8 && customBombCount.length() > 0){
+            StringBuilder stringBuilder = new StringBuilder(customBombCount);
+            stringBuilder.deleteCharAt(customBombCount.length() -1);
+            customBombCount = stringBuilder.toString();
+        }
     }
 
     @Override
     MenuScenes getFollowUpScene() {
+        if (followUpScene != null){
+            return followUpScene;
+        }
         return null;
     }
 

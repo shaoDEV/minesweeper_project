@@ -71,11 +71,15 @@ public class CreateNewProfilScene {
                 else iconID = 0;
             }
             if (createProfileInteractionRectangle.contains(mouseEvent.getPoint())) {
-                profilController.createProfil( name, iconID, selectedProfilID);
-                fadeIn = false;
-                animationComplete = false;
+                createProfil();
             }
         }
+    }
+
+    private void createProfil(){
+        profilController.createProfil( name, iconID, selectedProfilID);
+        fadeIn = false;
+        animationComplete = false;
     }
 
     public void keyInteraction(KeyEvent keyEvent) {
@@ -85,6 +89,9 @@ public class CreateNewProfilScene {
                 StringBuilder stringBuilder = new StringBuilder(name);
                 stringBuilder.deleteCharAt(name.length() -1);
                 name = stringBuilder.toString();
+            }
+            if(keyEvent.getKeyCode() == 10){
+                createProfil();
             }
         }
     }

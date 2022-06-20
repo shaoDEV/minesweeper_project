@@ -1,7 +1,6 @@
 package de.shao.menu;
 
 import de.shao.driver.SystemResources;
-import de.shao.game.GameBoard;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,7 +24,6 @@ public class MenuFrame extends JFrame{
 
         //PastaCode
         SystemResources.FramePoint = new Point(this.getLocation());
-        System.out.println(SystemResources.FramePoint);
         //Ende vom PastaCode
 
         this.setBackground(new Color(1.0f, 1.0f, 1.0f, 0.0f));

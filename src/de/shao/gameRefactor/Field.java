@@ -1,6 +1,7 @@
 package de.shao.gameRefactor;
 
 import de.shao.driver.PictureController;
+import de.shao.driver.SystemResources;
 
 import java.awt.*;
 
@@ -11,6 +12,8 @@ public class Field {
     private char bottomPictureIdentifier;
     private boolean flagged;
     private boolean open;
+
+    private Rectangle fieldArea;
 
     private PictureController pictureController = null;
 
@@ -31,9 +34,14 @@ public class Field {
         flagged = false;
         open = false;
         this.pictureController = pictureController;
+        fieldArea = new Rectangle(x,y,48,48);
     }
 
     public void drawField(Graphics2D g2d) {
+        int mouseX = MouseInfo.getPointerInfo().getLocation().x - SystemResources.GameFramePoint.x;
+        int mouseY = MouseInfo.getPointerInfo().getLocation().y - SystemResources.GameFramePoint.y;
+        Point mouseEvent = new Point(mouseX, mouseY);
+
         Image image;
         if (open) {
             if (bottomPictureIdentifier == 'b') image = pictureController.getBomb();
@@ -42,6 +50,8 @@ public class Field {
         } else if (flagged) image = pictureController.getFlag();
         else image = pictureController.getBlock(false);
         g2d.drawImage(image, x, y, null);
+
+        if (fieldArea.contains(mouseEvent)) g2d.drawImage(pictureController.getSystemResources("fieldHovering"), x, y, null);
     }
 
     public void setBottomPictureIdentifier(char bottomPicture) {

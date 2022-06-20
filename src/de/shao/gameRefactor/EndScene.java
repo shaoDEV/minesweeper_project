@@ -1,6 +1,7 @@
 package de.shao.gameRefactor;
 
 import de.shao.driver.PictureController;
+import de.shao.driver.SystemResources;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -38,6 +39,7 @@ public class EndScene {
 
     public void sceneInteraction(MouseEvent mouseEvent){
         if (backToMenuArea.contains(mouseEvent.getPoint())){
+            SystemResources.isGameActive = false;
             goBackToMenu = true;
         }
         if (startNewGameArea.contains(mouseEvent.getPoint())){

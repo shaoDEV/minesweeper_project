@@ -5,6 +5,8 @@ import de.shao.driver.PictureController;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class  GameScene {
 
@@ -54,6 +56,7 @@ public class  GameScene {
         }
         setRandomBombs();
         setNumbers();
+
     }
 
     public void drawScene(Graphics2D g2d) {

@@ -15,6 +15,8 @@ public class SystemResources {
 
     //Pasta Code
     public static Point FramePoint = null;
+    public static Point GameFramePoint = null;
+    public static boolean isGameActive = false;
     //Pasta Code Ende
 
     Map<String, Image> imageMap = new HashMap<>();
@@ -69,10 +71,36 @@ public class SystemResources {
             imageMap.put("customButtonHover", masterImage);
             masterImage = ImageIO.read(ResHelper.getResourcenStream("images/system/menu/buttonHover.png"));
             imageMap.put("buttonHover", masterImage);
+            masterImage = ImageIO.read(ResHelper.getResourcenStream("images/system/menu/arrowLeftHover.png"));
+            imageMap.put("arrowLeftHover", masterImage);
+            masterImage = ImageIO.read(ResHelper.getResourcenStream("images/system/menu/arrowRightHover.png"));
+            imageMap.put("arrowRightHover", masterImage);
+            masterImage = ImageIO.read(ResHelper.getResourcenStream("images/system/menu/backToProfile.png"));
+            imageMap.put("backToProfile", masterImage);
+            masterImage = ImageIO.read(ResHelper.getResourcenStream("images/system/menu/backToProfileHover.png"));
+            imageMap.put("backToProfileHover", masterImage);
+
 
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public int getFieldWidthBySize(int fieldSize){
+        switch (fieldSize){
+            case 10 -> {return 666;}
+            case 16 -> {return 954;}
+            case 25 -> {return 666;}
+        }
+        return 666;
+    }
+    public int getFieldHeightBySize(int fieldSize){
+        switch (fieldSize){
+            case 10 -> {return 630;}
+            case 16 -> {return 917;}
+            case 25 -> {return 666;}
+        }
+        return 630;
     }
 
     public Image getSystemImage(String key){

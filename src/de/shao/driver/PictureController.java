@@ -189,6 +189,8 @@ public class PictureController {
             systemResources.put("background10", image);
             image = ImageIO.read(ResHelper.getResourcenStream("images/system/ingame/16x16.png"));
             systemResources.put("background16", image);
+            image = ImageIO.read(ResHelper.getResourcenStream("images/system/ingame/fieldHovering.png"));
+            systemResources.put("fieldHovering", scaleImage(image));
         } catch (IOException e) {
             e.printStackTrace();
         }

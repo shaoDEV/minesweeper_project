@@ -7,6 +7,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class GameBoard extends JPanel {
 
@@ -64,6 +66,15 @@ public class GameBoard extends JPanel {
                 fieldSize,
                 bombCount,
                 pictureController);
+
+        java.util.Timer menuTimer = new Timer();
+        menuTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                repaint();
+            }
+        }, 0, 17);
+
     }
 
     private void getGameStatus() {

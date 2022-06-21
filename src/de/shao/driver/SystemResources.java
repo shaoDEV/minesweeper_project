@@ -12,7 +12,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SystemResources {
-    private final boolean DEBUG = true;
     private static SystemResources systemResourcese = null;
 
     //Pasta Code
@@ -24,17 +23,27 @@ public class SystemResources {
     public static long currentTimeInSec = 0;
     //Pasta Code Ende
 
+    //Deklaration der Hash Map für alle System Bilder die vom Menu gebnutzt werden.
     Map<String, Image> imageMap = new HashMap<>();
 
+    /**
+     * @return Gibt die aktive Instanz von SystemResources zurück
+     */
     public static SystemResources getInstance() {
         if (systemResourcese != null) return systemResourcese;
         return new SystemResources();
     }
 
+    /**
+     * Standartkonstruktor der die Methode zum laden der Bilder aufruft.
+     */
     private SystemResources(){
         loadImages();
     }
 
+    /**
+     * Lade Methode der alle für das Menu benötigen Bilder vorlädt und in einer Hash Map speichert um diese schnell aufzurufen.
+     */
     private void loadImages(){
         BufferedImage masterImage;
         try {
@@ -95,6 +104,10 @@ public class SystemResources {
         }
     }
 
+    /**
+     * @param fieldSize aktuelle Feldgröße
+     * @return Gibt die Weite des Feldes anhand des Übergeben Parameters zurück
+     */
     public int getFieldWidthBySize(int fieldSize){
         switch (fieldSize){
             case 10 -> {return 666;}
@@ -103,6 +116,10 @@ public class SystemResources {
         }
         return 666;
     }
+    /**
+     * @param fieldSize aktuelle Feldgröße
+     * @return Gibt die Höhe des Feldes anhand des Übergeben Parameters zurück
+     */
     public int getFieldHeightBySize(int fieldSize){
         switch (fieldSize){
             case 10 -> {return 630;}
@@ -112,6 +129,11 @@ public class SystemResources {
         return 630;
     }
 
+    /**
+     * Sucht mithilfe des Keys das gescuhte Bild aus der Hashmap und liefert dieses zurück
+     * @param key Bilder Key zur Suche in der HashMap
+     * @return Gibt gesuchtes BIld zurück
+     */
     public Image getSystemImage(String key){
         return imageMap.get(key);
     }

@@ -18,10 +18,12 @@ public class GameFrame extends JFrame {
 
         this.pictureController = pictureController;
 
+        //Füge dem Frame ein neues GameBoard (Panel) hinzu.
         add(new GameBoard(this, frameWidth, frameHeight, pictureController, bombcount, fieldSize));
         setSize(new Dimension(frameWidth,frameHeight));
         setUndecorated(true);
         setLocationRelativeTo(null);
+        //definiert das das Frame selber keinen Hintergrund beseitzt damit das Gesamte Feld ein Bild sein kann.
         setBackground(new Color(1.0f, 1.0f, 1.0f, 0.0f));
 
         //PastaCode
@@ -29,10 +31,6 @@ public class GameFrame extends JFrame {
         //Ende vom PastaCode
 
         setVisible(true);
-    }
-
-    private void initialize(){
-
     }
 
 }

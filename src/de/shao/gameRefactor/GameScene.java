@@ -15,21 +15,29 @@ public class  GameScene {
 
     PictureController pictureController = null;
 
+    //Feldparamter
     private int fieldSize = 0;
     private int fieldMeasure = 0;
     private int bombCount = 0;
     private int flagsPlaced = 0;
 
+    //Flags zur übergabe an das Gameboard
     private Boolean activeGame = null;
     private boolean gameWon = false;
 
+    //Definiert das Feld und handled alls Felder
     private Field[][] fieldMatrix;
     private Field[] allFields;
 
+    //Deklariert die Eckpunkte des Spieles um es korrekt zu zeichnen
     private Point sceneCorner = null;
     private Point bottomRightBackgroundCorner = null;
 
     private long startTime;
+
+    private int testingGetBombsPlaced;
+    private int testingGetNumbersPlaced;
+    private boolean testingGetPointClicked;
 
     public GameScene(Point upperLeftSceneCorner, Point bottomRightBackgroundCorner, int fieldSize, int bombCount, PictureController pictureController) {
         this.fieldSize = fieldSize;
@@ -41,8 +49,6 @@ public class  GameScene {
 
         fieldMatrix = new Field[fieldSize][fieldSize];
         allFields = new Field[fieldSize * fieldSize];
-
-
 
         initialize();
     }
@@ -102,6 +108,7 @@ public class  GameScene {
             if (!(allFields[randomField].getBottomPictureIdentifier() == 'b')) {
                 allFields[randomField].setBottomPictureIdentifier('b');
                 bombsLeft--;
+                testingGetBombsPlaced ++;
             }
         }
     }
@@ -123,10 +130,10 @@ public class  GameScene {
                                 }
                             }
                         }
-                        if (nearBombs > 0)
-                            fieldMatrix[verticalPosition][horizontalPosition].setBottomPictureIdentifier(Character.forDigit(nearBombs, 10)); //Wandle int in Char um (radix = Zahlensystem)
+                        if (nearBombs > 0) fieldMatrix[verticalPosition][horizontalPosition].setBottomPictureIdentifier(Character.forDigit(nearBombs, 10)); //Wandle int in Char um (radix = Zahlensystem)
                     }
                 }
+                testingGetNumbersPlaced += 1;
             }
         }
     }
@@ -149,11 +156,15 @@ public class  GameScene {
         }
     }
 
-    public void sceneInteraction(MouseEvent mouseEvent) {
+    public void callSceneInteraction(MouseEvent mouseEvent) {
+        sceneInteraction(mouseEvent.getPoint(), mouseEvent.getButton());
+    }
+
+    public void sceneInteraction(Point mousePoint, int mouseEvent){
         if (startTime == 0) startTime = System.currentTimeMillis();
         activeGame = true;
-        Field handledField = fieldMatrix[(mouseEvent.getY() - sceneCorner.y) / fieldMeasure][(mouseEvent.getX() - sceneCorner.x) / fieldMeasure];
-        if (mouseEvent.getButton() == 3) {
+        Field handledField = fieldMatrix[(mousePoint.y - sceneCorner.y) / fieldMeasure][(mousePoint.x - sceneCorner.x) / fieldMeasure];
+        if (mouseEvent == 3) {
 
             if (flagsPlaced < bombCount && !handledField.isOpen() && !handledField.isFlagged()) {
                 handledField.setFlagged(true);
@@ -162,7 +173,7 @@ public class  GameScene {
                 handledField.setFlagged(false);
                 flagsPlaced--;
             }
-        } else if (mouseEvent.getButton() == 1) {
+        } else if (mouseEvent == 1) {
 
             if (!handledField.isOpen() && !handledField.isFlagged()) {
                 if (!handledField.isFlagged()) {
@@ -171,6 +182,7 @@ public class  GameScene {
                 }
             }
         }
+        if (mousePoint.equals(new Point(50, 50))) testingGetPointClicked = true;
         checkEndOfGame();
     }
 
@@ -205,5 +217,25 @@ public class  GameScene {
 
     public boolean isGameWon() {
         return gameWon;
+    }
+
+    public int getTestingGetBombsPlaced() {
+        return testingGetBombsPlaced;
+    }
+
+    public int getTestingGetNumbersPlaced() {
+        return testingGetNumbersPlaced;
+    }
+
+    public void setActiveGame(Boolean activeGame) {
+        this.activeGame = activeGame;
+    }
+
+    public void setGameWon(boolean gameWon) {
+        this.gameWon = gameWon;
+    }
+
+    public boolean isTestingGetPointClicked() {
+        return testingGetPointClicked;
     }
 }

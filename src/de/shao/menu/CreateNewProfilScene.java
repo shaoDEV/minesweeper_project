@@ -10,7 +10,7 @@ import java.awt.event.MouseEvent;
 
 public class CreateNewProfilScene {
 
-    private final int ICON_COUNT = 4;
+    private final int ICON_COUNT = 5;
 
     private int position = 0;
     private boolean fadeIn = true;

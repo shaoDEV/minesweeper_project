@@ -18,7 +18,7 @@ public class ProfilScene extends MenuScenes {
 
     private int firstX = 0, secondX = 0, thirdX = 0;
     private int firstY = 0, secondY = 0, thirdY = 0;
-    private final int STEPSPEED = 12;
+    private final int STEPSPEED = 16;
     SystemResources systemResources;
 
     private Rectangle firstProfilArea, secondProfilArea, thirdProfilArea;

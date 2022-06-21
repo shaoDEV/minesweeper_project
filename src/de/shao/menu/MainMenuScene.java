@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -16,7 +17,7 @@ public class MainMenuScene extends MenuScenes {
     private int profilID;
     private int selectedSkinID = 1;
     private final int SKINCOUNT = 3;
-    private String customBombCount = "";
+    private String customBombCount = "10";
     private int customBombCountNummeric = 0;
 
     private SystemResources systemResources;
@@ -36,6 +37,14 @@ public class MainMenuScene extends MenuScenes {
     private int perosnal16Highscore = 0;
     private int perosnal25Highscore = 0;
 
+    private ArrayList<String> leaderboard10Names = new ArrayList<>();
+    private ArrayList<String> leaderboard16Names = new ArrayList<>();
+    private ArrayList<String> leaderboard25Names = new ArrayList<>();
+
+    private ArrayList<Integer> leaderboard10 = new ArrayList<>();
+    private ArrayList<Integer> leaderboard16 = new ArrayList<>();
+    private ArrayList<Integer> leaderboard25 = new ArrayList<>();
+
     public MainMenuScene(int profilID, SystemResources systemResources) {
         this.profilID = profilID;
         this.systemResources = systemResources;
@@ -53,6 +62,7 @@ public class MainMenuScene extends MenuScenes {
         menuTimer.schedule(new TimerTask() {
             @Override
             public void run() {
+                //Personal Highscores
                 try(Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
                     Statement stmt = conn.createStatement();
                     ResultSet rs = stmt.executeQuery("SELECT MIN(secToFinish) FROM tenFieldHighscore WHERE userID = " + profilController.getProfilByID(profilID).getProfilID() + "; ");) {
@@ -159,8 +169,8 @@ public class MainMenuScene extends MenuScenes {
         } else graphics2D.drawImage(systemResources.getSystemImage("button"), 457, 345, null);
         graphics2D.drawString("Mittel - 16x16", 540, 402);
         if (classicGame25.contains(mouseEvent)) {
-            graphics2D.drawImage(systemResources.getSystemImage("buttonHover"), 824, 345, null);
-        } else graphics2D.drawImage(systemResources.getSystemImage("button"), 824, 345, null);
+            graphics2D.drawImage(systemResources.getSystemImage("buttonDisable"), 824, 345, null);
+        } else graphics2D.drawImage(systemResources.getSystemImage("buttonDisable"), 824, 345, null);
         graphics2D.drawString("Schwer - 25x25", 890, 402);
         //endregion
 
@@ -172,8 +182,8 @@ public class MainMenuScene extends MenuScenes {
             graphics2D.drawImage(systemResources.getSystemImage("customButtonHover"), 766, 722, null);
         } else graphics2D.drawImage(systemResources.getSystemImage("customButton"), 766, 722, null);
         if (customGame25.contains(mouseEvent)) {
-            graphics2D.drawImage(systemResources.getSystemImage("customButtonHover"), 766, 780, null);
-        } else graphics2D.drawImage(systemResources.getSystemImage("customButton"), 766, 780, null);
+            graphics2D.drawImage(systemResources.getSystemImage("customButtonDisable"), 766, 780, null);
+        } else graphics2D.drawImage(systemResources.getSystemImage("customButtonDisable"), 766, 780, null);
 
         //Trenner
         graphics2D.setColor(new Color(58, 254, 245));
@@ -289,13 +299,13 @@ public class MainMenuScene extends MenuScenes {
 
 
             }
-            if (classicGame25.contains(mouseEvent.getPoint())) {
+/*            if (classicGame25.contains(mouseEvent.getPoint())) {
                 SystemResources.isGameActive = true;
                 new GameFrame(systemResources.getFieldWidthBySize(25),
                         systemResources.getFieldHeightBySize(25),
                         PictureController.getPictureController(selectedSkinID, 48),
                         150,
-                        25);
+                        25);*/
 
 
             }
@@ -306,6 +316,8 @@ public class MainMenuScene extends MenuScenes {
             if (customGame10.contains(mouseEvent.getPoint())) {
                 int tempBombCount = 10;
                 if (customBombCountNummeric < (10*10)) tempBombCount = customBombCountNummeric;
+                System.out.println(customBombCountNummeric);
+                System.out.println(tempBombCount);
                 new GameFrame(systemResources.getFieldWidthBySize(10),
                         systemResources.getFieldHeightBySize(10),
                         PictureController.getPictureController(selectedSkinID, 48),
@@ -323,7 +335,7 @@ public class MainMenuScene extends MenuScenes {
                         16);
             }
 
-            if (customGame25.contains(mouseEvent.getPoint())) {
+/*            if (customGame25.contains(mouseEvent.getPoint())) {
                 int tempBombCount = 150;
                 if (customBombCountNummeric < (25*25)) tempBombCount = customBombCountNummeric;
                 new GameFrame(systemResources.getFieldWidthBySize(25),
@@ -331,10 +343,8 @@ public class MainMenuScene extends MenuScenes {
                         PictureController.getPictureController(selectedSkinID, 48),
                         tempBombCount,
                         25);
-            }
+            }*/
         }
-
-    }
 
     @Override
     void keyInteraction(KeyEvent keyEvent) {
@@ -345,7 +355,7 @@ public class MainMenuScene extends MenuScenes {
             stringBuilder.deleteCharAt(customBombCount.length() - 1);
             customBombCount = stringBuilder.toString();
         }
-
+        customBombCountNummeric = Integer.parseInt(customBombCount);
     }
 
     @Override

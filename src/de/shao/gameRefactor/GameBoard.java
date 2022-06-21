@@ -9,6 +9,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -33,6 +34,7 @@ public class GameBoard extends JPanel {
     BackgroundScene backgroundScene = null;
     GameScene gameScene = null;
     EndScene endScene = null;
+
 
     public GameBoard(JFrame frame, int width, int height, PictureController pictureController, int bombCount, int fieldSize) {
         sirFrameALot = frame;
@@ -94,11 +96,11 @@ public class GameBoard extends JPanel {
             endScene = new EndScene(pictureController, new Point(initPoint.x + ((widthActiveGameArea / 2) - (widthEndSceneItem / 2)), 200)); //Erstellung der Endscene mit berechnetem Zeichenpunkt
             String sql = "";
             if (fieldSize == 10)
-                sql = "INSERT INTO `tenFieldHighscore`(`userID`, `username`, `secToFinish`) VALUES ('" + SystemResources.actualID + "','" + SystemResources.actualUsername + "','999')";
+                sql = "INSERT INTO `tenFieldHighscore`(`userID`, `username`, `secToFinish`) VALUES ('" + SystemResources.actualID + "','" + SystemResources.actualUsername + "'," + SystemResources.currentTimeInSec + ")";
             if (fieldSize == 16)
-                sql = "INSERT INTO `sixtenFieldHighscore`(`userID`, `username`, `secToFinish`) VALUES ('" + SystemResources.actualID + "','" + SystemResources.actualUsername + "','999')";
+                sql = "INSERT INTO `sixtenFieldHighscore`(`userID`, `username`, `secToFinish`) VALUES ('" + SystemResources.actualID + "','" + SystemResources.actualUsername + "'," + SystemResources.currentTimeInSec + ")";
             if (fieldSize == 25)
-                sql = "INSERT INTO `twentyFiveFieldHighscore`(`userID`, `username`, `secToFinish`) VALUES ('" + SystemResources.actualID + "','" + SystemResources.actualUsername + "','999')";
+                sql = "INSERT INTO `twentyFiveFieldHighscore`(`userID`, `username`, `secToFinish`) VALUES ('" + SystemResources.actualID + "','" + SystemResources.actualUsername + "'," + SystemResources.currentTimeInSec + ")";
             if (gameWon) {
                 try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS)) {
                     Statement stmt = conn.createStatement();
@@ -114,6 +116,7 @@ public class GameBoard extends JPanel {
 
 
     private void boardInteraction(MouseEvent e) {
+
         if (activeGame == null || activeGame) gameScene.sceneInteraction(e);
         else {
             endScene.sceneInteraction(e);
@@ -122,8 +125,6 @@ public class GameBoard extends JPanel {
                 initialize();
             }
         }
-
-
     }
 
     @Override

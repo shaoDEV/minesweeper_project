@@ -3,9 +3,11 @@ package de.shao.driver;
 import resources.ResHelper;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,6 +21,7 @@ public class SystemResources {
     public static boolean isGameActive = false;
     public static int actualID = 0;
     public static String actualUsername = "";
+    public static long currentTimeInSec = 0;
     //Pasta Code Ende
 
     Map<String, Image> imageMap = new HashMap<>();
@@ -81,6 +84,10 @@ public class SystemResources {
             imageMap.put("backToProfile", masterImage);
             masterImage = ImageIO.read(ResHelper.getResourcenStream("images/system/menu/backToProfileHover.png"));
             imageMap.put("backToProfileHover", masterImage);
+            masterImage = ImageIO.read(ResHelper.getResourcenStream("images/system/menu/customButtonDisable.png"));
+            imageMap.put("customButtonDisable", masterImage);
+            masterImage = ImageIO.read(ResHelper.getResourcenStream("images/system/menu/buttonDisable.png"));
+            imageMap.put("buttonDisable", masterImage);
 
 
         } catch (IOException e) {

@@ -1,9 +1,12 @@
 package de.shao.gameRefactor;
 
 import de.shao.driver.PictureController;
+import de.shao.driver.SystemConstraints;
+import de.shao.driver.SystemResources;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.time.LocalDate;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -26,6 +29,8 @@ public class  GameScene {
     private Point sceneCorner = null;
     private Point bottomRightBackgroundCorner = null;
 
+    private long startTime;
+
     public GameScene(Point upperLeftSceneCorner, Point bottomRightBackgroundCorner, int fieldSize, int bombCount, PictureController pictureController) {
         this.fieldSize = fieldSize;
         this.bombCount = bombCount;
@@ -36,6 +41,8 @@ public class  GameScene {
 
         fieldMatrix = new Field[fieldSize][fieldSize];
         allFields = new Field[fieldSize * fieldSize];
+
+
 
         initialize();
     }
@@ -60,6 +67,14 @@ public class  GameScene {
     }
 
     public void drawScene(Graphics2D g2d) {
+        if (activeGame != null && activeGame){
+            SystemResources.currentTimeInSec = (System.currentTimeMillis() - startTime)/1000;
+        }
+        g2d.setColor(new Color(58, 254, 245));
+        g2d.setFont(new Font("Minecraft", Font.PLAIN, 35));
+        if (fieldSize == 10) g2d.drawString(SystemResources.currentTimeInSec+"", SystemConstraints.TEN_TEN_TIME.point().x,SystemConstraints.TEN_TEN_TIME.point().y);
+        if (fieldSize == 16) g2d.drawString(SystemResources.currentTimeInSec+"", SystemConstraints.SIXTEEN_SIXTEEN_TIME.point().x,SystemConstraints.SIXTEEN_SIXTEEN_TIME.point().y);
+
         for (Field field : allFields) {
             field.drawField(g2d);
         }
@@ -70,6 +85,11 @@ public class  GameScene {
         int firstTileSize = tileSizeEachBomb + (300%bombCount); //Die genau Größe für das erste Teil um den evtl. entstehenden Rest abzufangen
         if (flagsPlaced == 1) g2d.fillRect(bottomRightBackgroundCorner.x - 39, bottomRightBackgroundCorner.y - 468 + firstTileSize, 18, 300 - firstTileSize);
         else g2d.fillRect(bottomRightBackgroundCorner.x - 39, bottomRightBackgroundCorner.y - 468 + (tileSizeEachBomb * flagsPlaced), 18, 300 - (tileSizeEachBomb * flagsPlaced));
+
+        //CloseButton
+        SystemResources systemResources = SystemResources.getInstance();
+        if (fieldSize == 10) g2d.drawImage(systemResources.getSystemImage("close"), 602, 0, null);
+        if (fieldSize == 16) g2d.drawImage(systemResources.getSystemImage("close"), 890, 0, null);
     }
 
     private void setRandomBombs() {
@@ -130,6 +150,7 @@ public class  GameScene {
     }
 
     public void sceneInteraction(MouseEvent mouseEvent) {
+        if (startTime == 0) startTime = System.currentTimeMillis();
         activeGame = true;
         Field handledField = fieldMatrix[(mouseEvent.getY() - sceneCorner.y) / fieldMeasure][(mouseEvent.getX() - sceneCorner.x) / fieldMeasure];
         if (mouseEvent.getButton() == 3) {

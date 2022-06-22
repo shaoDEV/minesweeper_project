@@ -27,6 +27,7 @@ public class CreateNewProfilScene {
     private Rectangle iconInteractionRectangle;
     private Rectangle createProfileInteractionRectangle;
 
+
     public CreateNewProfilScene(SystemResources systemResources, ProfilController profilController, int selectedProfil) {
         this.systemResources = systemResources;
         this.profilController = profilController;

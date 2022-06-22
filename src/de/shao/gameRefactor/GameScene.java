@@ -97,6 +97,9 @@ public class  GameScene {
 
     }
 
+    /**
+     * Geht alle Felder durch un platziert zufällig eine Bombe sollte an dem gewählten Feld noch keine Bombe liegen
+     */
     private void setRandomBombs() {
         int bombsLeft = bombCount;
         Random random = new Random();
@@ -107,11 +110,15 @@ public class  GameScene {
             if (!(allFields[randomField].getBottomPictureIdentifier() == 'b')) {
                 allFields[randomField].setBottomPictureIdentifier('b');
                 bombsLeft--;
+                //Jedes mal wenn eine Bombe platziert wird, wird der Zähler hochgezöhlt damit im Testing geprüft werden kann ob das platzieren richtigt durchläuft.
                 testingGetBombsPlaced ++;
             }
         }
     }
 
+    /**
+     * Gehe jedes Feld durch und prüfe die umliegenden Felder nach Bomben.
+     */
     private void setNumbers() {
         //Durchlaufe alle Felder der Feldmatrix
         for (int verticalPosition = 0; verticalPosition < fieldMatrix.length; verticalPosition++) {
@@ -137,6 +144,11 @@ public class  GameScene {
         }
     }
 
+    /**
+     * Prüft alle umliegenden Felder vom übergebenen Feld und öffnet dieeses wenn es möglich ist.
+     * Ruft an dem geöffneten Feld diese Methode erneut auf
+     * @param fieldToCheck
+     */
     private void searchAndOpen(Field fieldToCheck) {
         int fieldToCheckY = (fieldToCheck.getY() - sceneCorner.y) / fieldMeasure;
         int fieldToCheckX = (fieldToCheck.getX() - sceneCorner.x) / fieldMeasure;
@@ -155,20 +167,32 @@ public class  GameScene {
         }
     }
 
+    /**
+     * Hilfsmethode um die eigentliche Methode mit Punkt und Button pressed aufzurufen um diese zu testen.
+     * @param mouseEvent Event übergeben vom Panel
+     */
     public void callSceneInteraction(MouseEvent mouseEvent) {
         sceneInteraction(mouseEvent.getPoint(), mouseEvent.getButton());
     }
 
+    /**
+     * Methode zum handlen des MausInputs. Sie fängt den Rechtsklick/Linksclick ab und führt das Feld öffnen an der richtigen Position aus.
+     * @param mousePoint Mausposition vom Event was das Panel übergibt
+     * @param mouseEvent Welcher Button auf dem übergeben Maus Event gedrückt wird.
+     */
     public void sceneInteraction(Point mousePoint, int mouseEvent){
         if (startTime == 0) startTime = System.currentTimeMillis();
         activeGame = true;
+
         //Hilfsvariablen
         int xHandledField = (mousePoint.y - sceneCorner.y) / fieldMeasure;
         int yHandledField = (mousePoint.x - sceneCorner.x) / fieldMeasure;
 
+        //Führt Button Funktion nur aus wenn sich die Maus auch wirklich im eigentlich Feld befindet
         if (xHandledField < fieldSize && yHandledField < fieldSize){
             Field handledField = fieldMatrix[xHandledField][yHandledField];
 
+            //Bei Rechtclick wird eine Flagge gesetzt, sollten noch Flagen übrig sein
             if (mouseEvent == 3) {
 
                 if (flagsPlaced < bombCount && !handledField.isOpen() && !handledField.isFlagged()) {
@@ -178,6 +202,7 @@ public class  GameScene {
                     handledField.setFlagged(false);
                     flagsPlaced--;
                 }
+                //Öffnet das Feld und ruft das rekursive öffnen mit dem gedrückten Feld auf.
             } else if (mouseEvent == 1) {
 
                 if (!handledField.isOpen() && !handledField.isFlagged()) {
@@ -189,22 +214,33 @@ public class  GameScene {
             }
         }
 
-
+        //Testing ob der Mausclick funktioniert hat.
         if (mousePoint.equals(new Point(50, 50))) testingGetPointClicked = true;
         checkEndOfGame();
     }
 
+    /**
+     * Ausgelagertes Verlieren.
+     * Es geht alle Felder durch und öffnet alle Bombenfelder sollte eine Bombe gedrückt werden.
+     */
     private void lostRound(){
         for (Field field : allFields) if (field.getBottomPictureIdentifier() == 'b') field.setOpen(true);
         activeGame = false;
         gameWon = false;
     }
 
+    /**
+     * Ausgelagerte Win Methode
+     * setzt den Status des Spiels auf ende und gewonnen damit diese Werte ans GameBoard zurpcgeben werden können.
+     */
     private void wonRound(){
         activeGame = false;
         gameWon = true;
     }
 
+    /**
+     * Prüft ob das Spiel vorbei ist und alle nötigen Felder geöffnet sind.
+     */
     private void checkEndOfGame(){
         int fieldsOpened = 0;
         for (Field field : allFields) {
@@ -219,30 +255,53 @@ public class  GameScene {
         }
     }
 
+    /**
+     * @return Gibt zurück ob das aktuelle Spiel noch aktiv ist
+     */
     public Boolean isActiveGame() {
         return activeGame;
     }
 
+    /**
+     * @return Gibt zurück ob das aktuelle Spiel gewonnen ist oder nicht.
+     */
     public boolean isGameWon() {
         return gameWon;
     }
 
+    /**
+     * @return Gibt für das Testing zurück wie viele Bomben platziert wurden
+     */
     public int getTestingGetBombsPlaced() {
         return testingGetBombsPlaced;
     }
 
+    /**
+     * @return Gibt für das Testing zurück wie viele Nummern platziert wurden
+     */
     public int getTestingGetNumbersPlaced() {
         return testingGetNumbersPlaced;
     }
 
+    /**
+     * Setzt das Spiel fürs Testing auf aktiv
+     * @param activeGame status auf den das Spiel gesetzt wird
+     */
     public void setActiveGame(Boolean activeGame) {
         this.activeGame = activeGame;
     }
 
+    /**
+     * Setzt das Spiel fürs Testing auf aktiv
+     * @param gameWon status auf den das Spiel gesetzt wird
+     */
     public void setGameWon(boolean gameWon) {
         this.gameWon = gameWon;
     }
 
+    /**
+     * @return Gibt zurück ob der Click durchgeführt wurde.
+     */
     public boolean isTestingGetPointClicked() {
         return testingGetPointClicked;
     }

@@ -4,6 +4,9 @@ import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+/**
+ * Diese Klasse handelt wie Profile abgespeichert und gelesen werden sollen und stellt dieses einfach zugänglich zur Verfügung
+ */
 public class ProfilController {
 
     private Profil firstProfil = null, secondProfil = null, thirdProfil = null;

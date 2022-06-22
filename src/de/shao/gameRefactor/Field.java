@@ -74,7 +74,7 @@ public class Field {
         g2d.drawImage(image, x, y, null);
 
         //Zeichnet falls die Maus das aktuelle Feld kreuzt einen halbtransparenten Rahmen über das Feld um ein besseres User Feedback zu geben.
-        if (fieldArea.contains(mouseEvent)) g2d.drawImage(pictureController.getSystemResources("fieldHovering"), x, y, null);
+        //if (fieldArea.contains(mouseEvent)) g2d.drawImage(pictureController.getSystemResources("fieldHovering"), x, y, null);
     }
 
     /**

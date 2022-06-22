@@ -54,7 +54,7 @@ public class MainMenuScene extends MenuScenes {
         SystemResources.actualUsername = profilController.getProfilByID(profilID).getName();
 
         initAreas();
-        initDatabase();
+        //initDatabase();
     }
 
     private void initDatabase(){
@@ -307,19 +307,18 @@ public class MainMenuScene extends MenuScenes {
                         150,
                         25);*/
 
-
-            }
             if (backToProfile.contains(mouseEvent.getPoint())) {
                 followUpScene = new ProfilScene(systemResources);
                 isSceneActive = false;
             }
             if (customGame10.contains(mouseEvent.getPoint())) {
                 int tempBombCount = 10;
-                if (customBombCountNummeric < (10*10)) tempBombCount = customBombCountNummeric;
+                if (customBombCountNummeric < (10 * 10) && customBombCountNummeric > 0) tempBombCount = customBombCountNummeric;
                 System.out.println(customBombCountNummeric);
                 System.out.println(tempBombCount);
-                new GameFrame(systemResources.getFieldWidthBySize(10),
-                        systemResources.getFieldHeightBySize(10),
+                SystemResources.isGameActive = true;
+                new GameFrame(666,
+                        630,
                         PictureController.getPictureController(selectedSkinID, 48),
                         tempBombCount,
                         10);
@@ -327,9 +326,10 @@ public class MainMenuScene extends MenuScenes {
 
             if (customGame16.contains(mouseEvent.getPoint())) {
                 int tempBombCount = 40;
-                if (customBombCountNummeric < (16*16)) tempBombCount = customBombCountNummeric;
-                new GameFrame(systemResources.getFieldWidthBySize(16),
-                        systemResources.getFieldHeightBySize(16),
+                if (customBombCountNummeric < (16 * 16)) tempBombCount = customBombCountNummeric;
+                SystemResources.isGameActive = true;
+                new GameFrame(954,
+                        917,
                         PictureController.getPictureController(selectedSkinID, 48),
                         tempBombCount,
                         16);
@@ -345,7 +345,7 @@ public class MainMenuScene extends MenuScenes {
                         25);
             }*/
         }
-
+    }
     @Override
     void keyInteraction(KeyEvent keyEvent) {
         if (keyEvent.getKeyCode() >= 48 && keyEvent.getKeyCode() <= 57 && customBombCount.length() <= 2)

@@ -24,6 +24,8 @@ public class MenuFrame extends JFrame{
 
         //PastaCode
         SystemResources.FramePoint = new Point(this.getLocation());
+        SystemResources systemResources = SystemResources.getInstance();
+        setIconImage(systemResources.getSystemImage("icon"));
         //Ende vom PastaCode
 
         this.setBackground(new Color(1.0f, 1.0f, 1.0f, 0.0f));

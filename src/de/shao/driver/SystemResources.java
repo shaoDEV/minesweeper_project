@@ -97,6 +97,10 @@ public class SystemResources {
             imageMap.put("customButtonDisable", masterImage);
             masterImage = ImageIO.read(ResHelper.getResourcenStream("images/system/menu/buttonDisable.png"));
             imageMap.put("buttonDisable", masterImage);
+            masterImage = ImageIO.read(ResHelper.getResourcenStream("images/system/icon.png"));
+            imageMap.put("icon", masterImage);
+            masterImage = ImageIO.read(ResHelper.getResourcenStream("images/system/menu/profilIcon_5.png"));
+            imageMap.put("profilIcon_5", masterImage);
 
 
         } catch (IOException e) {

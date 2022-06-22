@@ -101,14 +101,14 @@ public class GameBoard extends JPanel {
 
         //Starte einen Neuen Timer (erzeugt neuen Thread) um das Feld 60 mal die Sekunde neu zu zeichnen damit der Indikator und der Timer aktuell angezeigt werden kann.
         //Der TimerTask führt genau im 17ms die angeben Funktion auf. Schafft er dies nicht zwischen den Intervallen wartet er sollte er Mitten drin fertig werden auf den nächsten Timer Tick
-        java.util.Timer menuTimer = new Timer();
-        menuTimer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                repaint();
-            }
-            //Period von 17 bedeutet das alle 17 Milisekunden die Funktion neu aufgerufen wird. Dies ergibt einen Framerate von 60 Bildern
-        }, 0, 17);
+//        java.util.Timer menuTimer = new Timer();
+//        menuTimer.schedule(new TimerTask() {
+//            @Override
+//            public void run() {
+//                repaint();
+//            }
+//            //Period von 17 bedeutet das alle 17 Milisekunden die Funktion neu aufgerufen wird. Dies ergibt einen Framerate von 60 Bildern
+//        }, 0, 17);
 
 
 

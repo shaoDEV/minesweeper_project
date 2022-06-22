@@ -28,6 +28,8 @@ public class GameFrame extends JFrame {
 
         //PastaCode
         SystemResources.GameFramePoint = new Point(this.getLocation());
+        SystemResources systemResources = SystemResources.getInstance();
+        setIconImage(systemResources.getSystemImage("icon"));
         //Ende vom PastaCode
 
         setVisible(true);

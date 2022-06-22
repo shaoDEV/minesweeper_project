@@ -85,14 +85,16 @@ public class CreateNewProfilScene {
 
     public void keyInteraction(KeyEvent keyEvent) {
         if (animationComplete) {
-            if (keyEvent.getKeyCode() >= 65 && keyEvent.getKeyCode() <= 90) name = name + keyEvent.getKeyChar();
+            if (name.length() < 12){
+                if (keyEvent.getKeyCode() >= 65 && keyEvent.getKeyCode() <= 90) name = name + keyEvent.getKeyChar();
+                if(keyEvent.getKeyCode() == 10){
+                    createProfil();
+                }
+            }
             if (keyEvent.getKeyChar() == 8 && name.length() > 0){
                 StringBuilder stringBuilder = new StringBuilder(name);
                 stringBuilder.deleteCharAt(name.length() -1);
                 name = stringBuilder.toString();
-            }
-            if(keyEvent.getKeyCode() == 10){
-                createProfil();
             }
         }
     }

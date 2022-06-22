@@ -39,6 +39,8 @@ public class  GameScene {
     private int testingGetNumbersPlaced;
     private boolean testingGetPointClicked;
 
+
+
     public GameScene(Point upperLeftSceneCorner, Point bottomRightBackgroundCorner, int fieldSize, int bombCount, PictureController pictureController) {
         this.fieldSize = fieldSize;
         this.bombCount = bombCount;
@@ -92,10 +94,7 @@ public class  GameScene {
         if (flagsPlaced == 1) g2d.fillRect(bottomRightBackgroundCorner.x - 39, bottomRightBackgroundCorner.y - 468 + firstTileSize, 18, 300 - firstTileSize);
         else g2d.fillRect(bottomRightBackgroundCorner.x - 39, bottomRightBackgroundCorner.y - 468 + (tileSizeEachBomb * flagsPlaced), 18, 300 - (tileSizeEachBomb * flagsPlaced));
 
-        //CloseButton
-        SystemResources systemResources = SystemResources.getInstance();
-        if (fieldSize == 10) g2d.drawImage(systemResources.getSystemImage("close"), 602, 0, null);
-        if (fieldSize == 16) g2d.drawImage(systemResources.getSystemImage("close"), 890, 0, null);
+
     }
 
     private void setRandomBombs() {
@@ -163,25 +162,34 @@ public class  GameScene {
     public void sceneInteraction(Point mousePoint, int mouseEvent){
         if (startTime == 0) startTime = System.currentTimeMillis();
         activeGame = true;
-        Field handledField = fieldMatrix[(mousePoint.y - sceneCorner.y) / fieldMeasure][(mousePoint.x - sceneCorner.x) / fieldMeasure];
-        if (mouseEvent == 3) {
+        //Hilfsvariablen
+        int xHandledField = (mousePoint.y - sceneCorner.y) / fieldMeasure;
+        int yHandledField = (mousePoint.x - sceneCorner.x) / fieldMeasure;
 
-            if (flagsPlaced < bombCount && !handledField.isOpen() && !handledField.isFlagged()) {
-                handledField.setFlagged(true);
-                flagsPlaced++;
-            } else if (handledField.isFlagged()) {
-                handledField.setFlagged(false);
-                flagsPlaced--;
-            }
-        } else if (mouseEvent == 1) {
+        if (xHandledField < fieldSize && yHandledField < fieldSize){
+            Field handledField = fieldMatrix[xHandledField][yHandledField];
 
-            if (!handledField.isOpen() && !handledField.isFlagged()) {
-                if (!handledField.isFlagged()) {
-                    handledField.setOpen(true);
-                    searchAndOpen(handledField);
+            if (mouseEvent == 3) {
+
+                if (flagsPlaced < bombCount && !handledField.isOpen() && !handledField.isFlagged()) {
+                    handledField.setFlagged(true);
+                    flagsPlaced++;
+                } else if (handledField.isFlagged()) {
+                    handledField.setFlagged(false);
+                    flagsPlaced--;
+                }
+            } else if (mouseEvent == 1) {
+
+                if (!handledField.isOpen() && !handledField.isFlagged()) {
+                    if (!handledField.isFlagged()) {
+                        handledField.setOpen(true);
+                        searchAndOpen(handledField);
+                    }
                 }
             }
         }
+
+
         if (mousePoint.equals(new Point(50, 50))) testingGetPointClicked = true;
         checkEndOfGame();
     }

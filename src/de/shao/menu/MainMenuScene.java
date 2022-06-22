@@ -355,7 +355,7 @@ public class MainMenuScene extends MenuScenes {
             stringBuilder.deleteCharAt(customBombCount.length() - 1);
             customBombCount = stringBuilder.toString();
         }
-        customBombCountNummeric = Integer.parseInt(customBombCount);
+        if (!customBombCount.equals("")) customBombCountNummeric = Integer.parseInt(customBombCount);
     }
 
     @Override

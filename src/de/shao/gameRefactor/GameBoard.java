@@ -40,6 +40,9 @@ public class GameBoard extends JPanel {
     GameScene gameScene = null;
     EndScene endScene = null;
 
+    //closeButton
+    private Rectangle closeButton;
+
 
     /**
      * Custom Konstruktor der den MouseListener hinzufügt und alle Werte in init deklariert.
@@ -107,6 +110,8 @@ public class GameBoard extends JPanel {
             //Period von 17 bedeutet das alle 17 Milisekunden die Funktion neu aufgerufen wird. Dies ergibt einen Framerate von 60 Bildern
         }, 0, 17);
 
+
+
     }
 
     /**
@@ -147,7 +152,10 @@ public class GameBoard extends JPanel {
      * @param e MouseEvent vom MouseListener
      */
     private void boardInteraction(MouseEvent e) {
-
+        if (closeButton != null && closeButton.contains(e.getPoint())){
+            SystemResources.isGameActive = false;
+            sirFrameALot.dispose();
+        }
         if (activeGame == null || activeGame) gameScene.callSceneInteraction(e);
         else {
             endScene.sceneInteraction(e);
@@ -166,6 +174,17 @@ public class GameBoard extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
+
+        //CloseButton
+        SystemResources systemResources = SystemResources.getInstance();
+        if (fieldSize == 10){
+            g2d.drawImage(systemResources.getSystemImage("close"), 602, 0, null);
+            closeButton = new Rectangle(602,0,64,64);
+        }
+        if (fieldSize == 16){
+            g2d.drawImage(systemResources.getSystemImage("close"), 890, 0, null);
+            closeButton = new Rectangle(890,0,64,64);
+        }
 
         //Zeichne alle Szenen nacheinander
         backgroundScene.drawScene(g2d);
